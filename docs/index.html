@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ramsey's Steakhouse — Groningen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #0a0a0a;
+      --charcoal: #141414;
+      --coal:     #1e1e1e;
+      --iron:     #2c2c2c;
+      --ash:      #3d3d3d;
+      --smoke:    #6b6b6b;
+      --light:    #c8c0b8;
+      --white:    #f4f0ea;
+      --red:      #b5271e;
+      --red-hi:   #d4332a;
+      --gold:     #c9a227;
+      --gold-hi:  #e0b93a;
+      --gold-dim: #7a601a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--black);
+      color: var(--light);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { display: block; max-width: 100%; }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+    /* ─── UTILS ──────────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    .section-label {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: var(--gold);
+      margin: 1.25rem 0 2rem;
+    }
+
+    .divider--center { margin-left: auto; margin-right: auto; }
+
+    .btn {
+      display: inline-block;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border-radius: 2px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn--gold {
+      background: var(--gold);
+      color: var(--black);
+    }
+    .btn--gold:hover { background: var(--gold-hi); }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+    .btn--outline:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .btn--red {
+      background: var(--red);
+      color: var(--white);
+    }
+    .btn--red:hover { background: var(--red-hi); }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0;
+      background: rgba(10,10,10,0.85);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    #nav.scrolled {
+      background: rgba(10,10,10,0.97);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.6);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: auto;
+      padding: 12px 48px;
+    }
+
+    @media (max-width: 767px) {
+      .nav-inner { padding: 10px 1.25rem; }
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .nav-logo__img {
+      height: 100px;
+      width: auto;
+      display: block;
+    }
+
+    @media (max-width: 767px) {
+      .nav-logo__img { height: 70px; }
+    }
+
+    .nav-links {
+      display: none;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--smoke);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #c9a84c; }
+
+    .nav-right {
+      display: none;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 768px) {
+      .nav-right { display: flex; }
+    }
+
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--smoke);
+      cursor: pointer;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 3px 5px;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+
+    .lang-btn:hover { color: var(--light); }
+    .lang-btn.active { color: #c9a84c; }
+
+    .lang-sep {
+      color: var(--ash);
+      font-size: 0.7rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* Mobile hamburger */
+    .nav-burger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    @media (min-width: 768px) {
+      .nav-burger { display: none; }
+    }
+
+    .nav-burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile drawer */
+    .nav-drawer {
+      display: none;
+      flex-direction: column;
+      background: rgba(10,10,10,0.99);
+      border-top: 1px solid var(--iron);
+      padding: 1.5rem 1.25rem 2rem;
+      gap: 1.25rem;
+    }
+
+    .nav-drawer.open { display: flex; }
+
+    @media (min-width: 768px) {
+      .nav-drawer { display: none !important; }
+    }
+
+    .nav-drawer a {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--light);
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--iron);
+    }
+
+    .nav-drawer .btn { width: 100%; text-align: center; margin-top: 0.5rem; }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.75) 60%, rgba(10,10,10,1) 100%),
+        url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1600&auto=format&fit=crop&q=80') center/cover no-repeat;
+    }
+
+    /* Ember glow overlay */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40%;
+      background: radial-gradient(ellipse at 50% 110%, rgba(181,39,30,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 7rem 0 4rem;
+      max-width: 680px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--light);
+      max-width: 460px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+
+    .hero-scroll svg { width: 18px; height: 18px; }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── SECTION BASE ───────────────────────────────────────── */
+    .section {
+      padding: 5rem 0;
+    }
+
+    .section--dark { background: var(--charcoal); }
+    .section--darker { background: var(--black); }
+    .section--coal { background: var(--coal); }
+
+    /* ─── MENU ───────────────────────────────────────────────── */
+    #menu { background: var(--charcoal); }
+
+    .menu-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .menu-header h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+    }
+
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      border-bottom: 1px solid var(--iron);
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .menu-tab {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      padding: 0.9rem 1.5rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .menu-tab:hover { color: var(--light); }
+    .menu-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    .menu-panel { display: none; }
+    .menu-panel.active { display: block; }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    @media (min-width: 640px) {
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 960px) {
+      .menu-grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .menu-item {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--iron);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .menu-item {
+        padding: 1.5rem 1.25rem;
+        border-right: 1px solid var(--iron);
+      }
+
+      .menu-item:nth-child(2n) { border-right: none; }
+    }
+
+    @media (min-width: 960px) {
+      .menu-item:nth-child(2n) { border-right: 1px solid var(--iron); }
+      .menu-item:nth-child(3n) { border-right: none; }
+    }
+
+    .menu-item__info { flex: 1; }
+
+    .menu-item__name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .menu-item__desc {
+      font-size: 0.82rem;
+      color: var(--smoke);
+      line-height: 1.5;
+    }
+
+    .menu-item__cut {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red-hi);
+      margin-bottom: 0.4rem;
+    }
+
+    .menu-item__price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .menu-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--smoke);
+      margin-top: 2.5rem;
+      font-style: italic;
+    }
+
+    /* ─── RESERVATIONS ───────────────────────────────────────── */
+    #reservations {
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative ember side glow */
+    #reservations::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; right: -10%;
+      width: 50%;
+      background: radial-gradient(ellipse at 100% 50%, rgba(181,39,30,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .res-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+    }
+
+    @media (min-width: 900px) {
+      .res-grid {
+        grid-template-columns: 1fr 1.4fr;
+        align-items: start;
+        gap: 5rem;
+      }
+    }
+
+    .res-intro h2 {
+      font-size: clamp(2rem, 4.5vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .res-intro p {
+      font-size: 0.95rem;
+      color: var(--smoke);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    .res-perks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .res-perks li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+      color: var(--light);
+    }
+
+    .res-perks li::before {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      background: var(--gold);
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
+      mask-repeat: no-repeat;
+      mask-size: contain;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-size: contain;
+      margin-top: 1px;
+    }
+
+    /* Form */
+    .res-form-wrap {
+      background: var(--coal);
+      border: 1px solid var(--iron);
+      border-top: 3px solid var(--gold);
+      padding: 2.5rem 2rem;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .res-form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .res-form-sub {
+      font-size: 0.8rem;
+      color: var(--smoke);
+      margin-bottom: 2rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 480px) {
+      .form-row--2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-field label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--smoke);
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: var(--iron);
+      border: 1px solid var(--ash);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+    }
+
+    .form-field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b6b' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.9rem center;
+      padding-right: 2.5rem;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--gold);
+      background: var(--ash);
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: var(--smoke);
+    }
+
+    .form-field textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .form-field select option {
+      background: var(--coal);
+    }
+
+    .form-submit {
+      margin-top: 1.5rem;
+    }
+
+    .form-submit .btn {
+      width: 100%;
+      padding: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .form-privacy {
+      font-size: 0.72rem;
+      color: var(--smoke);
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    /* ─── ABOUT ──────────────────────────────────────────────── */
+    #about { background: var(--coal); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (min-width: 800px) {
+      .about-grid { grid-template-columns: 1fr 1fr; gap: 5rem; }
+    }
+
+    .about-img-wrap {
+      position: relative;
+    }
+
+    .about-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 2px;
+      filter: brightness(0.85) saturate(0.8);
+    }
+
+    .about-img-badge {
+      position: absolute;
+      bottom: -1.25rem;
+      right: -1.25rem;
+      width: 100px;
+      height: 100px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .about-img-badge span:first-child {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--black);
+      line-height: 1;
+    }
+
+    .about-img-badge span:last-child {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--black);
+      line-height: 1.2;
+    }
+
+    .about-text h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .about-text p {
+      font-size: 0.95rem;
+      color: var(--smoke);
+      line-height: 1.85;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-text p strong {
+      color: var(--light);
+      font-weight: 600;
+    }
+
+    .about-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .about-stat__num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .about-stat__label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      margin-top: 0.2rem;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    #footer {
+      background: var(--black);
+      border-top: 1px solid var(--iron);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (min-width: 640px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 960px) {
+      .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+    }
+
+    .footer-brand__name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-brand__sub {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--smoke);
+      line-height: 1.7;
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li {
+      font-size: 0.85rem;
+      color: var(--smoke);
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .footer-col ul li a {
+      color: var(--smoke);
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    .footer-hours-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--smoke);
+      padding: 0.35rem 0;
+      border-bottom: 1px solid var(--iron);
+    }
+
+    .footer-hours-row:first-child { border-top: 1px solid var(--iron); }
+    .footer-hours-row span:last-child { color: var(--light); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--iron);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--ash);
+    }
+
+    .footer-bottom a { color: var(--ash); }
+    .footer-bottom a:hover { color: var(--gold); }
+
+    /* ─── SUCCESS STATE ──────────────────────────────────────── */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .form-success.show { display: block; }
+
+    .form-success__icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+    }
+
+    .form-success__icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--black);
+    }
+
+    .form-success h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-success p {
+      font-size: 0.9rem;
+      color: var(--smoke);
+    }
+
+    /* ─── UTILITY ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .fade-up--d1 { animation-delay: 0.1s; }
+    .fade-up--d2 { animation-delay: 0.22s; }
+    .fade-up--d3 { animation-delay: 0.36s; }
+    .fade-up--d4 { animation-delay: 0.5s; }
+
+    /* ─── MOBILE OPTIMIZATIONS ───────────────────────────── */
+
+    /* Prevent badge from clipping off-screen on mobile */
+    @media (max-width: 640px) {
+      .about-img-badge {
+        right: 0.5rem;
+        bottom: 0.5rem;
+        width: 80px;
+        height: 80px;
+      }
+      .about-img-badge span:first-child { font-size: 1.4rem; }
+      .about-img-badge span:last-child  { font-size: 0.55rem; }
+    }
+
+    /* Tighter form padding on very small screens */
+    @media (max-width: 400px) {
+      .res-form-wrap { padding: 1.5rem 1rem; }
+      .form-row--2   { grid-template-columns: 1fr; }
+    }
+
+    /* Hero title — keep readable on tiny screens */
+    @media (max-width: 380px) {
+      .hero-title { font-size: 2rem; }
+      .hero-sub   { font-size: 0.92rem; }
+    }
+
+    /* Menu tabs — ensure they don't overflow on narrow screens */
+    .menu-tab { min-width: 0; }
+
+    @media (max-width: 380px) {
+      .menu-tab { padding: 0.75rem 0.85rem; font-size: 0.68rem; }
+    }
+
+    /* Footer — single column on small phones */
+    @media (max-width: 480px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+    }
+
+    /* About stats wrap tightly on small screens */
+    @media (max-width: 400px) {
+      .about-stats { gap: 1.25rem; }
+      .about-stat__num { font-size: 1.8rem; }
+    }
+
+    /* Prevent long words from breaking layout */
+    .hero-title, .res-intro h2, .about-text h2 { word-break: break-word; }
+
+    /* Section padding reduced on mobile */
+    @media (max-width: 480px) {
+      .section { padding: 3.5rem 0; }
+      #footer  { padding: 3rem 0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════════════════ -->
+<header id="nav">
+  <div class="container">
+    <nav class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <img src="logo.png" alt="Ramsey's Steakhouse" style="height: 80px; width: auto; display: block;" />
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
+        <li><a href="#reservations" data-i18n="nav_reservations">Reservations</a></li>
+        <li><a href="#about" data-i18n="nav_about">About</a></li>
+        <li><a href="#footer" data-i18n="nav_contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <span class="lang-sep">|</span>
+          <button class="lang-btn" data-lang="nl">NL</button>
+        </div>
+        <a href="#reservations" class="btn btn--gold" data-i18n="nav_reserve">Reserve a Table</a>
+      </div>
+
+      <button class="nav-burger" id="navBurger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="nav-drawer" id="navDrawer">
+    <a href="#menu" onclick="closeDrawer()" data-i18n="nav_menu">Menu</a>
+    <a href="#reservations" onclick="closeDrawer()" data-i18n="nav_reservations">Reservations</a>
+    <a href="#about" onclick="closeDrawer()" data-i18n="nav_about">About</a>
+    <a href="#footer" onclick="closeDrawer()" data-i18n="nav_contact">Contact</a>
+    <div class="lang-switcher" style="padding:0.4rem 0;border-bottom:1px solid var(--iron);">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <span class="lang-sep" style="margin:0 4px;">|</span>
+      <button class="lang-btn" data-lang="nl">NL</button>
+    </div>
+    <a href="#reservations" class="btn btn--gold" onclick="closeDrawer()" data-i18n="nav_reserve">Reserve a Table</a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-content">
+      <p class="hero-eyebrow fade-up" data-i18n="hero_eyebrow">Groningen &mdash; Est. 2026</p>
+      <h1 class="hero-title fade-up fade-up--d1" data-i18n="hero_title">
+        Fire.<br><em>Precision.</em><br>No Compromise.
+      </h1>
+      <p class="hero-sub fade-up fade-up--d2" data-i18n="hero_sub">
+        Premium dry-aged cuts, expertly grilled over open fire. A steakhouse built for those who demand the best at every table.
+      </p>
+      <div class="hero-actions fade-up fade-up--d3">
+        <a href="#reservations" class="btn btn--gold" data-i18n="hero_cta1">Reserve Your Table</a>
+        <a href="#menu" class="btn btn--outline" data-i18n="hero_cta2">View the Menu</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+    <span data-i18n="scroll">Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     MENU
+════════════════════════════════════════════════════════ -->
+<section id="menu" class="section section--dark">
+  <div class="container">
+    <div class="menu-header">
+      <span class="section-label" data-i18n="menu_label">The Menu</span>
+      <h2 data-i18n="menu_h2">Cut Above the Rest</h2>
+      <div class="divider divider--center"></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="menu-tabs" role="tablist">
+      <button class="menu-tab active" data-tab="steaks" role="tab" data-i18n="tab_steaks">Steaks</button>
+      <button class="menu-tab" data-tab="starters" role="tab" data-i18n="tab_starters">Starters</button>
+      <button class="menu-tab" data-tab="sides" role="tab" data-i18n="tab_sides">Sides</button>
+      <button class="menu-tab" data-tab="drinks" role="tab" data-i18n="tab_drinks">Drinks</button>
+    </div>
+
+    <!-- STEAKS -->
+    <div class="menu-panel active" id="tab-steaks">
+      <div class="menu-grid">
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="steak1_cut">Dry-Aged 28 Days</span>
+            <div class="menu-item__name" data-i18n="steak1_name">Ribeye</div>
+            <div class="menu-item__desc" data-i18n="steak1_desc">400g &mdash; Black Angus, intense marbling, served with bone marrow butter</div>
+          </div>
+          <div class="menu-item__price">&euro;48</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="steak2_cut">Signature Cut</span>
+            <div class="menu-item__name" data-i18n="steak2_name">Tomahawk</div>
+            <div class="menu-item__desc" data-i18n="steak2_desc">1.1kg &mdash; Long-bone ribeye, reverse-seared over charcoal, for two</div>
+          </div>
+          <div class="menu-item__price">&euro;89</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="steak3_cut">Dry-Aged 35 Days</span>
+            <div class="menu-item__name" data-i18n="steak3_name">Porterhouse</div>
+            <div class="menu-item__desc" data-i18n="steak3_desc">600g &mdash; T-bone with both tenderloin and strip, the full experience</div>
+          </div>
+          <div class="menu-item__price">&euro;62</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="steak4_cut">Prime Cut</span>
+            <div class="menu-item__name" data-i18n="steak4_name">Filet Mignon</div>
+            <div class="menu-item__desc" data-i18n="steak4_desc">220g &mdash; Center-cut tenderloin, wrapped in aged pancetta</div>
+          </div>
+          <div class="menu-item__price">&euro;44</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="steak5_cut">Chef's Pick</span>
+            <div class="menu-item__name" data-i18n="steak5_name">New York Strip</div>
+            <div class="menu-item__desc" data-i18n="steak5_desc">350g &mdash; Bold flavor, firm bite, finished with compound herb butter</div>
+          </div>
+          <div class="menu-item__price">&euro;38</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="steak6_cut">Wagyu</span>
+            <div class="menu-item__name" data-i18n="steak6_name">A5 Wagyu Striploin</div>
+            <div class="menu-item__desc" data-i18n="steak6_desc">180g &mdash; Japanese A5 grade, extraordinary marbling, served on hot stone</div>
+          </div>
+          <div class="menu-item__price">&euro;95</div>
+        </div>
+
+      </div>
+      <p class="menu-note" data-i18n="menu_note">All steaks are served with your choice of sauce: peppercorn, chimichurri, or red wine jus. Ask your server for preferred doneness.</p>
+    </div>
+
+    <!-- STARTERS -->
+    <div class="menu-panel" id="tab-starters">
+      <div class="menu-grid">
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="start1_name">Beef Tartare</div>
+            <div class="menu-item__desc" data-i18n="start1_desc">Hand-cut Black Angus, capers, shallots, quail egg, sourdough crisps</div>
+          </div>
+          <div class="menu-item__price">&euro;16</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="start2_name">Bone Marrow</div>
+            <div class="menu-item__desc" data-i18n="start2_desc">Roasted veal bone marrow, toasted brioche, gremolata, fleur de sel</div>
+          </div>
+          <div class="menu-item__price">&euro;14</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="start3_name">Burrata &amp; Heirloom</div>
+            <div class="menu-item__desc" data-i18n="start3_desc">Creamy burrata, heirloom tomatoes, aged balsamic, fresh basil oil</div>
+          </div>
+          <div class="menu-item__price">&euro;13</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="start4_name">Seared Scallops</div>
+            <div class="menu-item__desc" data-i18n="start4_desc">Pan-seared king scallops, cauliflower puree, crispy pancetta, truffle oil</div>
+          </div>
+          <div class="menu-item__price">&euro;18</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="start5_name">French Onion Soup</div>
+            <div class="menu-item__desc" data-i18n="start5_desc">Rich beef broth, caramelized onions, cognac, Gruy&egrave;re crouton</div>
+          </div>
+          <div class="menu-item__price">&euro;11</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="start6_name">Wagyu Sliders</div>
+            <div class="menu-item__desc" data-i18n="start6_desc">Three mini wagyu burgers, aged cheddar, pickled mustard seeds, truffle aioli</div>
+          </div>
+          <div class="menu-item__price">&euro;17</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SIDES -->
+    <div class="menu-panel" id="tab-sides">
+      <div class="menu-grid">
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="side1_name">Truffle Fries</div>
+            <div class="menu-item__desc" data-i18n="side1_desc">Hand-cut fries tossed in truffle oil, Parmesan, fresh thyme</div>
+          </div>
+          <div class="menu-item__price">&euro;8</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="side2_name">Creamed Spinach</div>
+            <div class="menu-item__desc" data-i18n="side2_desc">Classic steakhouse style, nutmeg, garlic, aged Gruy&egrave;re</div>
+          </div>
+          <div class="menu-item__price">&euro;7</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="side3_name">Roasted Mushrooms</div>
+            <div class="menu-item__desc" data-i18n="side3_desc">Wild mushroom mix, garlic confit, parsley, brown butter</div>
+          </div>
+          <div class="menu-item__price">&euro;8</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="side4_name">Mac &amp; Cheese</div>
+            <div class="menu-item__desc" data-i18n="side4_desc">Four-cheese sauce, toasted breadcrumb crust, smoked paprika</div>
+          </div>
+          <div class="menu-item__price">&euro;9</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="side5_name">Grilled Asparagus</div>
+            <div class="menu-item__desc" data-i18n="side5_desc">Dutch white asparagus, hollandaise, crispy capers</div>
+          </div>
+          <div class="menu-item__price">&euro;8</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <div class="menu-item__name" data-i18n="side6_name">Twice-Baked Potato</div>
+            <div class="menu-item__desc" data-i18n="side6_desc">Loaded with sour cream, chives, aged cheddar, smoked bacon bits</div>
+          </div>
+          <div class="menu-item__price">&euro;7</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DRINKS -->
+    <div class="menu-panel" id="tab-drinks">
+      <div class="menu-grid">
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="drink1_cut">Red Wine</span>
+            <div class="menu-item__name" data-i18n="drink1_name">Chateau Pichon Baron 2018</div>
+            <div class="menu-item__desc" data-i18n="drink1_desc">Pauillac, Bordeaux &mdash; Full-bodied, cassis, cedar, long finish</div>
+          </div>
+          <div class="menu-item__price">&euro;95</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="drink2_cut">Red Wine</span>
+            <div class="menu-item__name" data-i18n="drink2_name">Malbec Gran Reserva</div>
+            <div class="menu-item__desc" data-i18n="drink2_desc">Mendoza, Argentina &mdash; Dark fruit, tobacco, smooth tannins</div>
+          </div>
+          <div class="menu-item__price">&euro;48</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="drink3_cut">Whisky</span>
+            <div class="menu-item__name" data-i18n="drink3_name">Macallan 18 Year</div>
+            <div class="menu-item__desc" data-i18n="drink3_desc">Single malt Scotch, sherry oak, dried fruit, gentle spice</div>
+          </div>
+          <div class="menu-item__price">&euro;22</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="drink4_cut">Cocktail</span>
+            <div class="menu-item__name" data-i18n="drink4_name">Old Fashioned</div>
+            <div class="menu-item__desc" data-i18n="drink4_desc">Buffalo Trace, Demerara, Angostura &amp; orange bitters, smoked glass</div>
+          </div>
+          <div class="menu-item__price">&euro;14</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="drink5_cut">Cocktail</span>
+            <div class="menu-item__name" data-i18n="drink5_name">Ember Negroni</div>
+            <div class="menu-item__desc" data-i18n="drink5_desc">Campari, charred oak gin, sweet vermouth, flame-torched orange peel</div>
+          </div>
+          <div class="menu-item__price">&euro;13</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="menu-item__info">
+            <span class="menu-item__cut" data-i18n="drink6_cut">Non-Alcoholic</span>
+            <div class="menu-item__name" data-i18n="drink6_name">Still &amp; Sparkling Water</div>
+            <div class="menu-item__desc" data-i18n="drink6_desc">Spa Reine still / Perrier sparkling, 750ml</div>
+          </div>
+          <div class="menu-item__price">&euro;5</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     RESERVATIONS
+════════════════════════════════════════════════════════ -->
+<section id="reservations" class="section section--darker">
+  <div class="container">
+    <div class="res-grid">
+
+      <!-- Left: intro -->
+      <div class="res-intro">
+        <span class="section-label" data-i18n="res_label">Reservations</span>
+        <h2 data-i18n="res_h2">Reserve Your Table</h2>
+        <div class="divider"></div>
+        <p data-i18n="res_p1">
+          Every seat at Ramsey's is a front-row view to the craft. We keep our dining room exclusive — tables go fast, especially on weekends.
+        </p>
+        <p data-i18n="res_p2">
+          Book directly below. No third-party fees, no middlemen. We confirm within the hour.
+        </p>
+
+        <ul class="res-perks">
+          <li data-i18n="perk1">Confirmation within 60 minutes</li>
+          <li data-i18n="perk2">Private dining room available for groups 8+</li>
+          <li data-i18n="perk3">Dietary requirements accommodated — just let us know</li>
+          <li data-i18n="perk4">Complimentary amuse-bouche for birthday &amp; anniversary tables</li>
+          <li data-i18n="perk5">Cancellations accepted up to 24 hours in advance</li>
+        </ul>
+      </div>
+
+      <!-- Right: form -->
+      <div class="res-form-wrap" id="reservationForm">
+        <div class="form-success" id="formSuccess">
+          <div class="form-success__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h3 data-i18n="success_h3">Reservation Received</h3>
+          <p data-i18n="success_p">We'll confirm your table within 60 minutes. See you soon.</p>
+        </div>
+
+        <div id="formBody">
+          <p class="res-form-title" data-i18n="form_title">Make a Reservation</p>
+          <p class="res-form-sub" data-i18n="form_sub">All fields required unless marked optional</p>
+
+          <form id="bookingForm" novalidate>
+
+            <div class="form-row form-row--2">
+              <div class="form-field">
+                <label for="fname" data-i18n="label_name">Full Name</label>
+                <input type="text" id="fname" name="name" placeholder="Jan de Vries" required />
+              </div>
+              <div class="form-field">
+                <label for="femail" data-i18n="label_email">Email Address</label>
+                <input type="email" id="femail" name="email" placeholder="jan@email.com" required />
+              </div>
+            </div>
+
+            <div class="form-row form-row--2">
+              <div class="form-field">
+                <label for="fphone" data-i18n="label_phone">Phone Number</label>
+                <input type="tel" id="fphone" name="phone" placeholder="+31 50 000 0000" required />
+              </div>
+              <div class="form-field">
+                <label for="fguests" data-i18n="label_guests">Party Size</label>
+                <select id="fguests" name="guests" required>
+                  <option value="" disabled selected data-i18n="select_guests">Select guests</option>
+                  <option value="1">1 guest</option>
+                  <option value="2">2 guests</option>
+                  <option value="3">3 guests</option>
+                  <option value="4">4 guests</option>
+                  <option value="5">5 guests</option>
+                  <option value="6">6 guests</option>
+                  <option value="7">7 guests</option>
+                  <option value="8+">8+ guests (group)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row form-row--2">
+              <div class="form-field">
+                <label for="fdate" data-i18n="label_date">Date</label>
+                <input type="date" id="fdate" name="date" required />
+              </div>
+              <div class="form-field">
+                <label for="ftime" data-i18n="label_time">Preferred Time</label>
+                <select id="ftime" name="time" required>
+                  <option value="" disabled selected data-i18n="select_time">Select time</option>
+                  <option value="17:30">17:30</option>
+                  <option value="18:00">18:00</option>
+                  <option value="18:30">18:30</option>
+                  <option value="19:00">19:00</option>
+                  <option value="19:30">19:30</option>
+                  <option value="20:00">20:00</option>
+                  <option value="20:30">20:30</option>
+                  <option value="21:00">21:00</option>
+                  <option value="21:30">21:30</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label for="fnotes"><span data-i18n="label_notes">Special Requests</span> <span style="color:var(--ash)" data-i18n="label_optional">(optional)</span></label>
+                <textarea id="fnotes" name="notes" placeholder="Allergies, dietary requirements, occasion, seating preferences..."></textarea>
+              </div>
+            </div>
+
+            <div class="form-submit">
+              <button type="submit" class="btn btn--gold" data-i18n="submit_btn">Confirm Reservation &rarr;</button>
+            </div>
+
+            <p class="form-privacy" data-i18n="privacy_note">We respect your privacy. Your details are never shared with third parties.</p>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════════════════════ -->
+<section id="about" class="section section--coal">
+  <div class="container">
+    <div class="about-grid">
+
+      <div class="about-img-wrap">
+        <img
+          class="about-img"
+          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop&q=80"
+          alt="Chef grilling at Ramsey's Steakhouse"
+        />
+        <div class="about-img-badge">
+          <span>5+</span>
+          <span data-i18n="badge_label">Years of Fire</span>
+        </div>
+      </div>
+
+      <div class="about-text">
+        <span class="section-label" data-i18n="about_label">About Us</span>
+        <h2 data-i18n="about_h2">No Gimmicks. Just Beef.</h2>
+        <div class="divider"></div>
+        <p data-i18n="about_p1">
+          Ramsey's Steakhouse was born from a simple obsession: <strong>the perfect steak</strong>. Not drowned in sauce, not buried under garnish — just exceptional meat, honest fire, and the skill to know when to leave it alone.
+        </p>
+        <p data-i18n="about_p2">
+          Our cuts are sourced directly from trusted Dutch and European farms, dry-aged in-house, and grilled over live charcoal by chefs who treat their craft with the seriousness it deserves. Every plate that leaves our kitchen has been earned.
+        </p>
+        <p data-i18n="about_p3">
+          We are located in the heart of Groningen. A small room. A tight team. Standards that don't move.
+        </p>
+
+        <div class="about-stats">
+          <div class="about-stat">
+            <div class="about-stat__num">28+</div>
+            <div class="about-stat__label" data-i18n="stat1_label">Cuts on Rotation</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat__num">100%</div>
+            <div class="about-stat__label" data-i18n="stat2_label">In-house Dry Aging</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat__num">4.9</div>
+            <div class="about-stat__label" data-i18n="stat3_label">Avg. Guest Rating</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <div class="footer-brand__name">Ramsey's</div>
+        <div class="footer-brand__sub" data-i18n="footer_sub">Steakhouse &middot; Groningen</div>
+        <p data-i18n="footer_p">Premium steakhouse in the heart of Groningen. No compromises, no pretense. Just fire and beef, done right.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer_nav_h4">Navigate</h4>
+        <ul>
+          <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
+          <li><a href="#reservations" data-i18n="nav_reservations">Reservations</a></li>
+          <li><a href="#about" data-i18n="nav_about">About</a></li>
+          <li><a href="#footer" data-i18n="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer_hours_h4">Opening Hours</h4>
+        <div class="footer-hours-row">
+          <span data-i18n="hours_mon">Mon &ndash; Tue</span>
+          <span data-i18n="hours_closed">Closed</span>
+        </div>
+        <div class="footer-hours-row">
+          <span data-i18n="hours_wed">Wed &ndash; Thu</span>
+          <span>17:30 &ndash; 22:00</span>
+        </div>
+        <div class="footer-hours-row">
+          <span data-i18n="hours_fri">Fri &ndash; Sat</span>
+          <span>17:00 &ndash; 22:30</span>
+        </div>
+        <div class="footer-hours-row">
+          <span data-i18n="hours_sun">Sunday</span>
+          <span>17:00 &ndash; 21:30</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact_h4">Contact</h4>
+        <ul>
+          <li>Herestraat 00<br>9711 LM Groningen</li>
+          <li style="margin-top:0.75rem"><a href="tel:+31500000000">+31 50 000 0000</a></li>
+          <li><a href="mailto:info@remsys.nl">info@remsys.nl</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p data-i18n="footer_copy">&copy; 2026 Ramsey's Steakhouse. All rights reserved.</p>
+      <p>
+        <a href="#" data-i18n="footer_privacy">Privacy Policy</a> &nbsp;&middot;&nbsp;
+        <a href="#" data-i18n="footer_terms">Terms</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════ -->
+<script>
+  /* ── Sticky nav ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* ── Mobile nav ── */
+  const burger = document.getElementById('navBurger');
+  const drawer = document.getElementById('navDrawer');
+
+  burger.addEventListener('click', () => {
+    const open = drawer.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+  });
+
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', false);
+  }
+
+  /* ── Menu tabs ── */
+  const tabs  = document.querySelectorAll('.menu-tab');
+  const panels = document.querySelectorAll('.menu-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ── Reservation form ── */
+  const form = document.getElementById('bookingForm');
+  const formBody = document.getElementById('formBody');
+  const formSuccess = document.getElementById('formSuccess');
+
+  // Set min date to today
+  const dateInput = document.getElementById('fdate');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.setAttribute('min', today);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Basic validation
+    const required = form.querySelectorAll('[required]');
+    let valid = true;
+
+    required.forEach(el => {
+      el.style.borderColor = '';
+      if (!el.value.trim()) {
+        el.style.borderColor = 'var(--red-hi)';
+        valid = false;
+      }
+    });
+
+    if (!valid) return;
+
+    // Simulate submission
+    const btn = form.querySelector('[type="submit"]');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      formBody.style.display = 'none';
+      formSuccess.classList.add('show');
+    }, 900);
+  });
+
+  /* ── Language switcher ── */
+  const translations = {
+    en: {
+      nav_menu: 'Menu', nav_reservations: 'Reservations', nav_about: 'About',
+      nav_contact: 'Contact', nav_reserve: 'Reserve a Table',
+      hero_eyebrow: 'Groningen &mdash; Est. 2026',
+      hero_title: 'Fire.<br><em>Precision.</em><br>No Compromise.',
+      hero_sub: 'Premium dry-aged cuts, expertly grilled over open fire. A steakhouse built for those who demand the best at every table.',
+      hero_cta1: 'Reserve Your Table', hero_cta2: 'View the Menu', scroll: 'Scroll',
+      menu_label: 'The Menu', menu_h2: 'Cut Above the Rest',
+      tab_steaks: 'Steaks', tab_starters: 'Starters', tab_sides: 'Sides', tab_drinks: 'Drinks',
+      steak1_cut: 'Dry-Aged 28 Days', steak1_name: 'Ribeye',
+      steak1_desc: '400g &mdash; Black Angus, intense marbling, served with bone marrow butter',
+      steak2_cut: 'Signature Cut', steak2_name: 'Tomahawk',
+      steak2_desc: '1.1kg &mdash; Long-bone ribeye, reverse-seared over charcoal, for two',
+      steak3_cut: 'Dry-Aged 35 Days', steak3_name: 'Porterhouse',
+      steak3_desc: '600g &mdash; T-bone with both tenderloin and strip, the full experience',
+      steak4_cut: 'Prime Cut', steak4_name: 'Filet Mignon',
+      steak4_desc: '220g &mdash; Center-cut tenderloin, wrapped in aged pancetta',
+      steak5_cut: "Chef's Pick", steak5_name: 'New York Strip',
+      steak5_desc: '350g &mdash; Bold flavor, firm bite, finished with compound herb butter',
+      steak6_cut: 'Wagyu', steak6_name: 'A5 Wagyu Striploin',
+      steak6_desc: '180g &mdash; Japanese A5 grade, extraordinary marbling, served on hot stone',
+      menu_note: 'All steaks are served with your choice of sauce: peppercorn, chimichurri, or red wine jus. Ask your server for preferred doneness.',
+      start1_name: 'Beef Tartare', start1_desc: 'Hand-cut Black Angus, capers, shallots, quail egg, sourdough crisps',
+      start2_name: 'Bone Marrow', start2_desc: 'Roasted veal bone marrow, toasted brioche, gremolata, fleur de sel',
+      start3_name: 'Burrata &amp; Heirloom', start3_desc: 'Creamy burrata, heirloom tomatoes, aged balsamic, fresh basil oil',
+      start4_name: 'Seared Scallops', start4_desc: 'Pan-seared king scallops, cauliflower puree, crispy pancetta, truffle oil',
+      start5_name: 'French Onion Soup', start5_desc: 'Rich beef broth, caramelized onions, cognac, Gruy&egrave;re crouton',
+      start6_name: 'Wagyu Sliders', start6_desc: 'Three mini wagyu burgers, aged cheddar, pickled mustard seeds, truffle aioli',
+      side1_name: 'Truffle Fries', side1_desc: 'Hand-cut fries tossed in truffle oil, Parmesan, fresh thyme',
+      side2_name: 'Creamed Spinach', side2_desc: 'Classic steakhouse style, nutmeg, garlic, aged Gruy&egrave;re',
+      side3_name: 'Roasted Mushrooms', side3_desc: 'Wild mushroom mix, garlic confit, parsley, brown butter',
+      side4_name: 'Mac &amp; Cheese', side4_desc: 'Four-cheese sauce, toasted breadcrumb crust, smoked paprika',
+      side5_name: 'Grilled Asparagus', side5_desc: 'Dutch white asparagus, hollandaise, crispy capers',
+      side6_name: 'Twice-Baked Potato', side6_desc: 'Loaded with sour cream, chives, aged cheddar, smoked bacon bits',
+      drink1_cut: 'Red Wine', drink1_name: 'Chateau Pichon Baron 2018',
+      drink1_desc: 'Pauillac, Bordeaux &mdash; Full-bodied, cassis, cedar, long finish',
+      drink2_cut: 'Red Wine', drink2_name: 'Malbec Gran Reserva',
+      drink2_desc: 'Mendoza, Argentina &mdash; Dark fruit, tobacco, smooth tannins',
+      drink3_cut: 'Whisky', drink3_name: 'Macallan 18 Year',
+      drink3_desc: 'Single malt Scotch, sherry oak, dried fruit, gentle spice',
+      drink4_cut: 'Cocktail', drink4_name: 'Old Fashioned',
+      drink4_desc: 'Buffalo Trace, Demerara, Angostura &amp; orange bitters, smoked glass',
+      drink5_cut: 'Cocktail', drink5_name: 'Ember Negroni',
+      drink5_desc: 'Campari, charred oak gin, sweet vermouth, flame-torched orange peel',
+      drink6_cut: 'Non-Alcoholic', drink6_name: 'Still &amp; Sparkling Water',
+      drink6_desc: 'Spa Reine still / Perrier sparkling, 750ml',
+      res_label: 'Reservations', res_h2: 'Reserve Your Table',
+      res_p1: "Every seat at Ramsey's is a front-row view to the craft. We keep our dining room exclusive &mdash; tables go fast, especially on weekends.",
+      res_p2: 'Book directly below. No third-party fees, no middlemen. We confirm within the hour.',
+      perk1: 'Confirmation within 60 minutes', perk2: 'Private dining room available for groups 8+',
+      perk3: 'Dietary requirements accommodated &mdash; just let us know',
+      perk4: 'Complimentary amuse-bouche for birthday &amp; anniversary tables',
+      perk5: 'Cancellations accepted up to 24 hours in advance',
+      form_title: 'Make a Reservation', form_sub: 'All fields required unless marked optional',
+      label_name: 'Full Name', label_email: 'Email Address', label_phone: 'Phone Number',
+      label_guests: 'Party Size', label_date: 'Date', label_time: 'Preferred Time',
+      label_notes: 'Special Requests', label_optional: '(optional)',
+      select_guests: 'Select guests', select_time: 'Select time',
+      submit_btn: 'Confirm Reservation &rarr;',
+      privacy_note: 'We respect your privacy. Your details are never shared with third parties.',
+      success_h3: 'Reservation Received', success_p: "We'll confirm your table within 60 minutes. See you soon.",
+      badge_label: 'Years of Fire', about_label: 'About Us', about_h2: 'No Gimmicks. Just Beef.',
+      about_p1: "Ramsey's Steakhouse was born from a simple obsession: <strong>the perfect steak</strong>. Not drowned in sauce, not buried under garnish &mdash; just exceptional meat, honest fire, and the skill to know when to leave it alone.",
+      about_p2: 'Our cuts are sourced directly from trusted Dutch and European farms, dry-aged in-house, and grilled over live charcoal by chefs who treat their craft with the seriousness it deserves. Every plate that leaves our kitchen has been earned.',
+      about_p3: "We are located in the heart of Groningen. A small room. A tight team. Standards that don't move.",
+      stat1_label: 'Cuts on Rotation', stat2_label: 'In-house Dry Aging', stat3_label: 'Avg. Guest Rating',
+      footer_sub: 'Steakhouse &middot; Groningen',
+      footer_p: 'Premium steakhouse in the heart of Groningen. No compromises, no pretense. Just fire and beef, done right.',
+      footer_nav_h4: 'Navigate', footer_hours_h4: 'Opening Hours', footer_contact_h4: 'Contact',
+      hours_mon: 'Mon &ndash; Tue', hours_closed: 'Closed', hours_wed: 'Wed &ndash; Thu',
+      hours_fri: 'Fri &ndash; Sat', hours_sun: 'Sunday',
+      footer_copy: '&copy; 2026 Ramsey\'s Steakhouse. All rights reserved.',
+      footer_privacy: 'Privacy Policy', footer_terms: 'Terms'
+    },
+    nl: {
+      nav_menu: 'Menu', nav_reservations: 'Reservaties', nav_about: 'Over ons',
+      nav_contact: 'Contact', nav_reserve: 'Reserveer een tafel',
+      hero_eyebrow: 'Groningen &mdash; Opgericht 2026',
+      hero_title: 'Vuur.<br><em>Precisie.</em><br>Geen Compromis.',
+      hero_sub: 'Premium dry-aged cuts, vakkundig gegrild boven open vuur. Een steakhouse voor wie het beste verlangt aan elke tafel.',
+      hero_cta1: 'Reserveer uw tafel', hero_cta2: 'Bekijk het menu', scroll: 'Scroll',
+      menu_label: 'Het Menu', menu_h2: 'Een Klasse Apart',
+      tab_steaks: 'Steaks', tab_starters: 'Voorgerechten', tab_sides: 'Bijgerechten', tab_drinks: 'Dranken',
+      steak1_cut: 'Dry-Aged 28 Dagen', steak1_name: 'Ribeye',
+      steak1_desc: '400g &mdash; Black Angus, intensieve marmering, geserveerd met botmergboter',
+      steak2_cut: 'Signature Cut', steak2_name: 'Tomahawk',
+      steak2_desc: '1,1 kg &mdash; Ribeye met lang bot, reverse-seared op houtskool, voor twee',
+      steak3_cut: 'Dry-Aged 35 Dagen', steak3_name: 'Porterhouse',
+      steak3_desc: '600g &mdash; T-bone met zowel ossenhaas als entrecôte, de volledige ervaring',
+      steak4_cut: 'Prime Cut', steak4_name: 'Filet Mignon',
+      steak4_desc: '220g &mdash; Centraal gesneden ossenhaas, gewikkeld in gerijpte pancetta',
+      steak5_cut: "Chef's Keuze", steak5_name: 'New York Strip',
+      steak5_desc: '350g &mdash; Krachtige smaak, stevige bite, afgewerkt met kruidenboter',
+      steak6_cut: 'Wagyu', steak6_name: 'A5 Wagyu Striploin',
+      steak6_desc: '180g &mdash; Japans A5-kwaliteit, buitengewone marmering, geserveerd op hete steen',
+      menu_note: 'Alle steaks worden geserveerd met uw keuze aan saus: peperkorrel, chimichurri of rode wijnjus. Vraag uw ober naar de gewenste gaarheid.',
+      start1_name: 'Beef Tartare', start1_desc: 'Handgesneden Black Angus, kappertjes, sjalotten, kwartelei, zuurdesem crackers',
+      start2_name: 'Botmerg', start2_desc: 'Geroosterd kalfsmerg, geroosterd brioche, gremolata, fleur de sel',
+      start3_name: 'Burrata &amp; Erfgoedtomaat', start3_desc: 'Romige burrata, erfgoedtomaten, oude balsamico, verse basilicumolie',
+      start4_name: 'Gebakken Sint-Jakobsschelpen', start4_desc: 'Gebakken sint-jakobsschelpen, bloemkoolpuree, krokante pancetta, truffelolie',
+      start5_name: 'Franse Uiensoep', start5_desc: 'Rijke runderbouillon, gekarameliseerde uien, cognac, Gruyère crouton',
+      start6_name: 'Wagyu Sliders', start6_desc: 'Drie mini wagyu burgers, oude cheddar, ingemaakte mosterdzaadjes, truffelaioli',
+      side1_name: 'Truffelfriet', side1_desc: 'Handgesneden friet met truffelolie, Parmezaan, verse tijm',
+      side2_name: 'Roomspinazie', side2_desc: 'Klassieke steakhouse stijl, nootmuskaat, knoflook, oude Gruyère',
+      side3_name: 'Geroosterde Paddenstoelen', side3_desc: 'Wilde paddenstoelenmix, knoflookconfit, peterselie, bruine boter',
+      side4_name: 'Mac &amp; Cheese', side4_desc: 'Vier-kaassaus, geroosterd paneermeel, gerookte paprika',
+      side5_name: 'Gegrilde Asperges', side5_desc: 'Hollandse witte asperges, hollandaisesaus, krokante kappertjes',
+      side6_name: 'Tweemaal Gebakken Aardappel', side6_desc: 'Gevuld met zure room, bieslook, oude cheddar, gerookt spek',
+      drink1_cut: 'Rode Wijn', drink1_name: 'Chateau Pichon Baron 2018',
+      drink1_desc: 'Pauillac, Bordeaux &mdash; Volle body, cassis, ceder, lange afdronk',
+      drink2_cut: 'Rode Wijn', drink2_name: 'Malbec Gran Reserva',
+      drink2_desc: 'Mendoza, Argentinië &mdash; Donker fruit, tabak, zachte tannines',
+      drink3_cut: 'Whisky', drink3_name: 'Macallan 18 Jaar',
+      drink3_desc: 'Single malt Scotch, sherryhout, gedroogd fruit, zachte specerijen',
+      drink4_cut: 'Cocktail', drink4_name: 'Old Fashioned',
+      drink4_desc: 'Buffalo Trace, Demerara, Angostura &amp; sinaasappelbitters, gerookt glas',
+      drink5_cut: 'Cocktail', drink5_name: 'Ember Negroni',
+      drink5_desc: 'Campari, verkoolde eiken gin, zoete vermout, gevlamde sinaasappelschil',
+      drink6_cut: 'Alcoholvrij', drink6_name: 'Still &amp; Bruisend Water',
+      drink6_desc: 'Spa Reine still / Perrier bruisend, 750ml',
+      res_label: 'Reservaties', res_h2: 'Reserveer uw tafel',
+      res_p1: "Elke stoel bij Ramsey's biedt een eersteklas zicht op het vakmanschap. We houden onze eetzaal exclusief &mdash; tafels zijn snel bezet, zeker in het weekend.",
+      res_p2: 'Boek direct hieronder. Geen bemiddelingskosten, geen tussenpersonen. We bevestigen binnen het uur.',
+      perk1: 'Bevestiging binnen 60 minuten', perk2: 'Privé-eetzaal beschikbaar voor groepen van 8+',
+      perk3: 'Dieetwensen worden ingewilligd &mdash; laat het ons weten',
+      perk4: 'Gratis amuse-bouche voor verjaardags- en jubileumtafels',
+      perk5: 'Annulering mogelijk tot 24 uur van tevoren',
+      form_title: 'Maak een reservering', form_sub: 'Alle velden verplicht tenzij optioneel aangegeven',
+      label_name: 'Volledige naam', label_email: 'E-mailadres', label_phone: 'Telefoonnummer',
+      label_guests: 'Aantal gasten', label_date: 'Datum', label_time: 'Voorkeurstijd',
+      label_notes: 'Speciale verzoeken', label_optional: '(optioneel)',
+      select_guests: 'Selecteer gasten', select_time: 'Selecteer tijd',
+      submit_btn: 'Bevestig reservering &rarr;',
+      privacy_note: 'Wij respecteren uw privacy. Uw gegevens worden nooit gedeeld met derden.',
+      success_h3: 'Reservering ontvangen', success_p: 'We bevestigen uw tafel binnen 60 minuten. Tot snel.',
+      badge_label: 'Jaar Vakmanschap', about_label: 'Over ons', about_h2: 'Geen Fratsen. Alleen Vlees.',
+      about_p1: "Ramsey's Steakhouse is geboren uit een simpele obsessie: <strong>de perfecte steak</strong>. Niet verdronken in saus, niet begraven onder garnering &mdash; alleen uitzonderlijk vlees, eerlijk vuur, en de vaardigheid om te weten wanneer je het met rust laat.",
+      about_p2: 'Onze cuts worden direct ingekocht bij vertrouwde Nederlandse en Europese boerderijen, in eigen huis dry-aged en gegrild op levend houtskool door chefs die hun vak serieus nemen. Elk bord dat onze keuken verlaat, is verdiend.',
+      about_p3: 'We zijn gevestigd in het hart van Groningen. Een kleine ruimte. Een hecht team. Normen die niet verschuiven.',
+      stat1_label: 'Cuts op Rotatie', stat2_label: 'Dry Aging in Eigen Huis', stat3_label: 'Gem. Gastbeoordeling',
+      footer_sub: 'Steakhouse &middot; Groningen',
+      footer_p: 'Premium steakhouse in het hart van Groningen. Geen compromissen, geen pretentie. Alleen vuur en vlees, zoals het hoort.',
+      footer_nav_h4: 'Navigeer', footer_hours_h4: 'Openingstijden', footer_contact_h4: 'Contact',
+      hours_mon: 'Ma &ndash; Di', hours_closed: 'Gesloten', hours_wed: 'Wo &ndash; Do',
+      hours_fri: 'Vr &ndash; Za', hours_sun: 'Zondag',
+      footer_copy: '&copy; 2026 Ramsey\'s Steakhouse. Alle rechten voorbehouden.',
+      footer_privacy: 'Privacybeleid', footer_terms: 'Voorwaarden'
+    }
+  };
+
+  let currentLang = 'en';
+
+  function applyLang(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (translations[lang][key] !== undefined) el.innerHTML = translations[lang][key];
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    document.documentElement.lang = lang;
+    currentLang = lang;
+  }
+
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.lang-btn');
+    if (btn) applyLang(btn.dataset.lang);
+  });
+
+  /* ── Smooth anchor offset (account for fixed nav) ── */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (!target) return;
+      e.preventDefault();
+      const offset = 70;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
