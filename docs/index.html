@@ -1018,7 +1018,7 @@
 
       <ul class="nav-links">
         <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
-        <li><a href="#reservations" data-i18n="nav_reservations">Reservations</a></li>
+        <li><a href="booking.html" data-i18n="nav_reservations">Reservations</a></li>
         <li><a href="#about" data-i18n="nav_about">About</a></li>
         <li><a href="#footer" data-i18n="nav_contact">Contact</a></li>
       </ul>
@@ -1029,7 +1029,7 @@
           <span class="lang-sep">|</span>
           <button class="lang-btn" data-lang="nl">NL</button>
         </div>
-        <a href="#reservations" class="btn btn--gold" data-i18n="nav_reserve">Reserve a Table</a>
+        <a href="booking.html" class="btn btn--gold" data-i18n="nav_reserve">Reserve a Table</a>
       </div>
 
       <button class="nav-burger" id="navBurger" aria-label="Toggle menu">
@@ -1042,7 +1042,7 @@
 
   <div class="nav-drawer" id="navDrawer">
     <a href="#menu" onclick="closeDrawer()" data-i18n="nav_menu">Menu</a>
-    <a href="#reservations" onclick="closeDrawer()" data-i18n="nav_reservations">Reservations</a>
+    <a href="booking.html" onclick="closeDrawer()" data-i18n="nav_reservations">Reservations</a>
     <a href="#about" onclick="closeDrawer()" data-i18n="nav_about">About</a>
     <a href="#footer" onclick="closeDrawer()" data-i18n="nav_contact">Contact</a>
     <div class="lang-switcher" style="padding:0.4rem 0;border-bottom:1px solid var(--iron);">
@@ -1050,7 +1050,7 @@
       <span class="lang-sep" style="margin:0 4px;">|</span>
       <button class="lang-btn" data-lang="nl">NL</button>
     </div>
-    <a href="#reservations" class="btn btn--gold" onclick="closeDrawer()" data-i18n="nav_reserve">Reserve a Table</a>
+    <a href="booking.html" class="btn btn--gold" onclick="closeDrawer()" data-i18n="nav_reserve">Reserve a Table</a>
   </div>
 </header>
 
@@ -1069,7 +1069,7 @@
         Premium dry-aged cuts, expertly grilled over open fire. A steakhouse built for those who demand the best at every table.
       </p>
       <div class="hero-actions fade-up fade-up--d3">
-        <a href="#reservations" class="btn btn--gold" data-i18n="hero_cta1">Reserve Your Table</a>
+        <a href="booking.html" class="btn btn--gold" data-i18n="hero_cta1">Reserve Your Table</a>
         <a href="#menu" class="btn btn--outline" data-i18n="hero_cta2">View the Menu</a>
       </div>
     </div>
@@ -1528,7 +1528,7 @@
         <h4 data-i18n="footer_nav_h4">Navigate</h4>
         <ul>
           <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
-          <li><a href="#reservations" data-i18n="nav_reservations">Reservations</a></li>
+          <li><a href="booking.html" data-i18n="nav_reservations">Reservations</a></li>
           <li><a href="#about" data-i18n="nav_about">About</a></li>
           <li><a href="#footer" data-i18n="nav_contact">Contact</a></li>
         </ul>
@@ -1816,12 +1816,17 @@
     });
     document.documentElement.lang = lang;
     currentLang = lang;
+    localStorage.setItem('lang', lang);
   }
 
   document.addEventListener('click', e => {
     const btn = e.target.closest('.lang-btn');
     if (btn) applyLang(btn.dataset.lang);
   });
+
+  // Restore saved language preference
+  const _savedLang = localStorage.getItem('lang');
+  if (_savedLang && _savedLang !== 'en') applyLang(_savedLang);
 
   /* ── Smooth anchor offset (account for fixed nav) ── */
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
