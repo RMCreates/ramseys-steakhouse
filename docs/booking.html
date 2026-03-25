@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reserve a Table — Ramsey's Steakhouse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #0a0a0a;
+      --charcoal: #141414;
+      --coal:     #1e1e1e;
+      --iron:     #2c2c2c;
+      --ash:      #3d3d3d;
+      --smoke:    #6b6b6b;
+      --light:    #c8c0b8;
+      --white:    #f4f0ea;
+      --red:      #b5271e;
+      --red-hi:   #d4332a;
+      --gold:     #c9a84c;
+      --gold-hi:  #e0c060;
+      --gold-dim: #7a601a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--black);
+      color: var(--light);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+    /* ─── NAV ──────────────────────────────────────────── */
+    .nav {
+      background: rgba(10,10,10,0.95);
+      border-bottom: 1px solid var(--iron);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 52px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--gold); }
+
+    .nav-back svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ─── PAGE LAYOUT ──────────────────────────────────── */
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .page-header .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-header p {
+      font-size: 0.95rem;
+      color: var(--smoke);
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .gold-line {
+      width: 48px;
+      height: 2px;
+      background: var(--gold);
+      margin: 1.25rem auto 0;
+    }
+
+    /* ─── STEPS ────────────────────────────────────────── */
+    .steps {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 1px;
+      background: var(--iron);
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      width: 100px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step__num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--iron);
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--smoke);
+      transition: all 0.25s;
+    }
+
+    .step__label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      transition: color 0.25s;
+    }
+
+    .step.active .step__num {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--black);
+    }
+
+    .step.active .step__label { color: var(--gold); }
+
+    .step.done .step__num {
+      background: var(--coal);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .step.done .step__label { color: var(--smoke); }
+
+    /* ─── CARD ─────────────────────────────────────────── */
+    .card {
+      background: var(--coal);
+      border: 1px solid var(--iron);
+      border-top: 2px solid var(--gold);
+      border-radius: 3px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+
+    .card-sub {
+      font-size: 0.8rem;
+      color: var(--smoke);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ─── CALENDAR ─────────────────────────────────────── */
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .cal-nav__month {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .cal-arrow {
+      background: none;
+      border: 1px solid var(--iron);
+      color: var(--smoke);
+      width: 34px;
+      height: 34px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .cal-arrow:hover { border-color: var(--gold); color: var(--gold); }
+    .cal-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+    .cal-arrow:disabled:hover { border-color: var(--iron); color: var(--smoke); }
+
+    .cal-arrow svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-day-header {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      text-align: center;
+      padding: 0.4rem 0;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 2px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      color: var(--light);
+      background: var(--iron);
+      user-select: none;
+    }
+
+    .cal-day:hover:not(.cal-day--disabled):not(.cal-day--empty) {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .cal-day--empty {
+      background: transparent;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .cal-day--disabled {
+      background: rgba(255,255,255,0.03);
+      color: var(--ash);
+      cursor: not-allowed;
+    }
+
+    .cal-day--today {
+      border-color: var(--smoke);
+    }
+
+    .cal-day--selected {
+      background: var(--gold) !important;
+      color: var(--black) !important;
+      border-color: var(--gold) !important;
+      font-weight: 700;
+    }
+
+    .cal-legend {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .cal-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      color: var(--smoke);
+    }
+
+    .cal-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    /* ─── TIME SLOTS ───────────────────────────────────── */
+    .timeslots-wrap {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .selected-date-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px;
+    }
+
+    .time-slot {
+      padding: 0.65rem 0.5rem;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: 1px solid var(--iron);
+      border-radius: 2px;
+      cursor: pointer;
+      background: var(--iron);
+      color: var(--light);
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .time-slot:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .time-slot--selected {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    .time-slot--full {
+      background: rgba(255,255,255,0.03);
+      border-color: var(--ash);
+      color: var(--ash);
+      cursor: not-allowed;
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .time-slot--full:hover {
+      border-color: var(--ash);
+      color: var(--ash);
+    }
+
+    /* ─── FORM ─────────────────────────────────────────── */
+    .booking-summary {
+      background: var(--iron);
+      border-radius: 2px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 2rem;
+    }
+
+    .summary-item {
+      font-size: 0.82rem;
+      color: var(--smoke);
+    }
+
+    .summary-item strong {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (min-width: 540px) {
+      .form-row--2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-field label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--smoke);
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: var(--iron);
+      border: 1px solid var(--ash);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.75rem 1rem;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+    }
+
+    .form-field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b6b' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.9rem center;
+      padding-right: 2.5rem;
+      background-color: var(--iron);
+    }
+
+    .form-field select option { background: var(--coal); }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .form-field input.invalid,
+    .form-field select.invalid,
+    .form-field textarea.invalid {
+      border-color: var(--red-hi);
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder { color: var(--smoke); }
+
+    .form-field textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-submit {
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      border-radius: 2px;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn--gold {
+      background: var(--gold);
+      color: var(--black);
+      width: 100%;
+    }
+
+    .btn--gold:hover { background: var(--gold-hi); }
+
+    .btn--gold:disabled {
+      background: var(--ash);
+      color: var(--smoke);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+
+    .btn--outline:hover { background: var(--gold); color: var(--black); }
+
+    .form-privacy {
+      font-size: 0.72rem;
+      color: var(--smoke);
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    /* ─── CONFIRMATION ─────────────────────────────────── */
+    .confirmation {
+      text-align: center;
+      padding: 1rem 0 2rem;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .confirmation__icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .confirmation__icon svg {
+      width: 34px;
+      height: 34px;
+      stroke: var(--black);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .confirmation h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .confirmation > p {
+      font-size: 0.95rem;
+      color: var(--smoke);
+      max-width: 380px;
+      margin: 0 auto 2rem;
+    }
+
+    .confirmation-details {
+      background: var(--coal);
+      border: 1px solid var(--iron);
+      border-top: 2px solid var(--gold);
+      border-radius: 3px;
+      padding: 1.5rem;
+      max-width: 420px;
+      margin: 0 auto 2rem;
+      text-align: left;
+    }
+
+    .conf-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--iron);
+      gap: 1rem;
+    }
+
+    .conf-row:last-child { border-bottom: none; }
+
+    .conf-row__label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--smoke);
+      flex-shrink: 0;
+    }
+
+    .conf-row__value {
+      font-size: 0.9rem;
+      color: var(--white);
+      text-align: right;
+    }
+
+    .conf-note {
+      font-size: 0.78rem;
+      color: var(--smoke);
+      text-align: center;
+      max-width: 380px;
+      margin: 0 auto 2rem;
+    }
+
+    /* ─── LANG SWITCHER ────────────────────────────────── */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      color: #6b6b6b;
+      cursor: pointer;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 3px 5px;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+
+    .lang-btn:hover { color: var(--light); }
+    .lang-btn.active { color: #c9a84c; }
+
+    .lang-sep {
+      color: #3d3d3d;
+      font-size: 0.7rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* ─── HIDDEN ───────────────────────────────────────── */
+    .hidden { display: none !important; }
+
+    /* ─── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 480px) {
+      .card { padding: 1.25rem; }
+      .page { padding: 2rem 1rem 4rem; }
+      .cal-day { font-size: 0.78rem; }
+      .steps::before { width: 140px; }
+      .step { width: 80px; }
+      .step__label { font-size: 0.58rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="Ramsey's Steakhouse" />
+    </a>
+    <div class="nav-right">
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="nl">NL</button>
+      </div>
+      <a href="index.html" class="nav-back">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        <span data-i18n="nav_back">Back to main site</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════ PAGE ═══════ -->
+<main class="page">
+
+  <div class="page-header">
+    <span class="eyebrow">Ramsey's Steakhouse &middot; Groningen</span>
+    <h1 data-i18n="page_title">Reserve Your Table</h1>
+    <p data-i18n="page_sub">Select a date and time, then complete your details. We'll confirm within the hour.</p>
+    <div class="gold-line"></div>
+  </div>
+
+  <!-- Steps indicator -->
+  <div class="steps">
+    <div class="step active" id="step1">
+      <div class="step__num">1</div>
+      <div class="step__label" data-i18n="step1_label">Date</div>
+    </div>
+    <div class="step" id="step2">
+      <div class="step__num">2</div>
+      <div class="step__label" data-i18n="step2_label">Time</div>
+    </div>
+    <div class="step" id="step3">
+      <div class="step__num">3</div>
+      <div class="step__label" data-i18n="step3_label">Details</div>
+    </div>
+  </div>
+
+  <!-- ── BOOKING FORM SECTION ── -->
+  <div id="bookingSection">
+
+    <!-- STEP 1: Calendar -->
+    <div class="card" id="calCard">
+      <div class="card-title" data-i18n="cal_title">Select a Date</div>
+      <div class="card-sub" data-i18n="cal_sub">Closed Mondays and Tuesdays</div>
+
+      <div class="cal-nav">
+        <button class="cal-arrow" id="calPrev" aria-label="Previous month">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="cal-nav__month" id="calMonthLabel"></div>
+        <button class="cal-arrow" id="calNext" aria-label="Next month">
+          <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
+
+      <div class="cal-grid" id="calGrid"></div>
+
+      <div class="cal-legend">
+        <div class="cal-legend-item">
+          <div class="cal-legend-dot" style="background:var(--gold)"></div>
+          <span data-i18n="legend_selected">Selected</span>
+        </div>
+        <div class="cal-legend-item">
+          <div class="cal-legend-dot" style="background:var(--iron)"></div>
+          <span data-i18n="legend_available">Available</span>
+        </div>
+        <div class="cal-legend-item">
+          <div class="cal-legend-dot" style="background:rgba(255,255,255,0.04);border:1px solid var(--ash)"></div>
+          <span data-i18n="legend_unavailable">Unavailable</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Time slots (hidden until date selected) -->
+    <div class="card hidden" id="timeCard">
+      <div class="card-title" data-i18n="time_title">Select a Time</div>
+      <p class="selected-date-label" id="selectedDateLabel"></p>
+      <div class="time-grid" id="timeGrid"></div>
+    </div>
+
+    <!-- STEP 3: Guest details (hidden until time selected) -->
+    <div class="card hidden" id="formCard">
+      <div class="card-title" data-i18n="form_card_title">Your Details</div>
+      <div class="card-sub" data-i18n="form_card_sub">Almost there — complete your reservation below</div>
+
+      <div class="booking-summary" id="bookingSummary"></div>
+
+      <form id="bookingForm" novalidate>
+        <div class="form-row form-row--2">
+          <div class="form-field">
+            <label for="fname" data-i18n="label_name">Full Name</label>
+            <input type="text" id="fname" name="name" placeholder="Jan de Vries" required />
+          </div>
+          <div class="form-field">
+            <label for="femail" data-i18n="label_email">Email Address</label>
+            <input type="email" id="femail" name="email" placeholder="jan@email.com" required />
+          </div>
+        </div>
+
+        <div class="form-row form-row--2">
+          <div class="form-field">
+            <label for="fphone" data-i18n="label_phone">Phone Number</label>
+            <input type="tel" id="fphone" name="phone" placeholder="+31 50 000 0000" required />
+          </div>
+          <div class="form-field">
+            <label for="fguests" data-i18n="label_guests">Party Size</label>
+            <select id="fguests" name="guests" required>
+              <option value="" disabled selected data-i18n="select_guests">Select guests</option>
+              <option value="1 guest">1 guest</option>
+              <option value="2 guests">2 guests</option>
+              <option value="3 guests">3 guests</option>
+              <option value="4 guests">4 guests</option>
+              <option value="5 guests">5 guests</option>
+              <option value="6 guests">6 guests</option>
+              <option value="7 guests">7 guests</option>
+              <option value="8+ guests">8+ guests (group)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="fnotes"><span data-i18n="label_notes">Special Requests</span> <span style="color:var(--ash);font-size:0.65rem;letter-spacing:0.1em" data-i18n="label_optional">(OPTIONAL)</span></label>
+            <textarea id="fnotes" name="notes" placeholder="Allergies, dietary requirements, occasion, seating preferences..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-submit">
+          <button type="submit" class="btn btn--gold" id="submitBtn" data-i18n="submit_btn">
+            Confirm Reservation &rarr;
+          </button>
+        </div>
+
+        <div id="formError" style="display:none;margin-top:1rem;padding:0.85rem 1rem;background:rgba(181,39,30,0.12);border:1px solid var(--red);border-radius:2px;font-size:0.85rem;color:#e07070;" data-i18n="error_msg">
+          Something went wrong — please call us to reserve: <a href="tel:+31500000000" style="color:var(--gold)">+31 50 000 0000</a>
+        </div>
+
+        <p class="form-privacy" data-i18n="privacy_note">We respect your privacy. Your details are never shared with third parties.</p>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- ── CONFIRMATION ── -->
+  <div id="confirmationSection" class="hidden">
+    <div class="confirmation">
+      <div class="confirmation__icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 data-i18n="conf_title">Reservation Confirmed</h2>
+      <p data-i18n="conf_sub">Thank you. We'll send a confirmation to your email within 60 minutes.</p>
+
+      <div class="confirmation-details" id="confirmationDetails"></div>
+
+      <p class="conf-note" data-i18n="conf_note">Need to change or cancel? Call us at <a href="tel:+31500000000" style="color:var(--gold)">+31 50 000 0000</a> or email <a href="mailto:info@ramseys.nl" style="color:var(--gold)">info@ramseys.nl</a>. Cancellations accepted up to 24 hours in advance.</p>
+
+      <a href="index.html" class="btn btn--outline" style="width:auto;display:inline-flex;" data-i18n="conf_back">
+        &larr; Back to Main Site
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  /* ─────────────────────────────────────────────────────
+     TRANSLATIONS
+  ───────────────────────────────────────────────────── */
+  const translations = {
+    en: {
+      nav_back:        'Back to main site',
+      page_title:      'Reserve Your Table',
+      page_sub:        "Select a date and time, then complete your details. We'll confirm within the hour.",
+      step1_label:     'Date',    step2_label: 'Time',    step3_label: 'Details',
+      cal_title:       'Select a Date',
+      cal_sub:         'Closed Mondays and Tuesdays',
+      legend_selected: 'Selected', legend_available: 'Available', legend_unavailable: 'Unavailable',
+      time_title:      'Select a Time',
+      form_card_title: 'Your Details',
+      form_card_sub:   'Almost there — complete your reservation below',
+      summary_date:    'Date', summary_time: 'Time',
+      label_name:      'Full Name',       label_email:    'Email Address',
+      label_phone:     'Phone Number',    label_guests:   'Party Size',
+      label_notes:     'Special Requests', label_optional: '(OPTIONAL)',
+      select_guests:   'Select guests',
+      submit_btn:      'Confirm Reservation &rarr;',
+      privacy_note:    'We respect your privacy. Your details are never shared with third parties.',
+      conf_title:      'Reservation Confirmed',
+      conf_sub:        "Thank you. We'll send a confirmation to your email within 60 minutes.",
+      conf_note:       'Need to change or cancel? Call us at <a href="tel:+31500000000" style="color:var(--gold)">+31 50 000 0000</a> or email <a href="mailto:info@ramseys.nl" style="color:var(--gold)">info@ramseys.nl</a>. Cancellations accepted up to 24 hours in advance.',
+      conf_back:       '&larr; Back to Main Site',
+      conf_label_name: 'Name',  conf_label_date: 'Date',   conf_label_time: 'Time',
+      conf_label_party:'Party Size', conf_label_email: 'Email', conf_label_phone: 'Phone',
+      conf_label_req:  'Requests', confirming: 'Confirming\u2026',
+      error_msg: 'Something went wrong \u2014 please call us to reserve: <a href="tel:+31500000000" style="color:var(--gold)">+31 50 000 0000</a>'
+    },
+    nl: {
+      nav_back:        'Terug naar de hoofdsite',
+      page_title:      'Reserveer uw tafel',
+      page_sub:        'Kies een datum en tijd, vul dan uw gegevens in. We bevestigen binnen het uur.',
+      step1_label:     'Datum',  step2_label: 'Tijd',     step3_label: 'Gegevens',
+      cal_title:       'Kies een datum',
+      cal_sub:         'Gesloten op maandag en dinsdag',
+      legend_selected: 'Geselecteerd', legend_available: 'Beschikbaar', legend_unavailable: 'Niet beschikbaar',
+      time_title:      'Kies een tijd',
+      form_card_title: 'Uw gegevens',
+      form_card_sub:   'Bijna klaar — vul uw reservering hieronder in',
+      summary_date:    'Datum', summary_time: 'Tijd',
+      label_name:      'Volledige naam',   label_email:    'E-mailadres',
+      label_phone:     'Telefoonnummer',   label_guests:   'Aantal gasten',
+      label_notes:     'Speciale verzoeken', label_optional: '(OPTIONEEL)',
+      select_guests:   'Selecteer gasten',
+      submit_btn:      'Bevestig reservering &rarr;',
+      privacy_note:    'Wij respecteren uw privacy. Uw gegevens worden nooit gedeeld met derden.',
+      conf_title:      'Reservering bevestigd',
+      conf_sub:        'Dank u. We sturen een bevestiging naar uw e-mailadres binnen 60 minuten.',
+      conf_note:       'Wilt u wijzigen of annuleren? Bel ons op <a href="tel:+31500000000" style="color:var(--gold)">+31 50 000 0000</a> of mail <a href="mailto:info@ramseys.nl" style="color:var(--gold)">info@ramseys.nl</a>. Annulering mogelijk tot 24 uur van tevoren.',
+      conf_back:       '&larr; Terug naar de hoofdsite',
+      conf_label_name: 'Naam', conf_label_date: 'Datum',  conf_label_time: 'Tijd',
+      conf_label_party:'Gasten', conf_label_email: 'E-mail', conf_label_phone: 'Telefoon',
+      conf_label_req:  'Verzoeken', confirming: 'Bevestigen\u2026',
+      error_msg: 'Er is iets misgegaan \u2014 bel ons om te reserveren: <a href="tel:+31500000000" style="color:var(--gold)">+31 50 000 0000</a>'
+    }
+  };
+
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (translations[lang][key] !== undefined) el.innerHTML = translations[lang][key];
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    document.documentElement.lang = lang;
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    renderCalendar(); // re-render month names & day headers in correct language
+  }
+
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.lang-btn');
+    if (btn) applyLang(btn.dataset.lang);
+  });
+
+  /* ─────────────────────────────────────────────────────
+     CONFIG
+  ───────────────────────────────────────────────────── */
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycbyiMJ1rvm6yY0KKExecP-XCQhqkSXm6bL3-7J4e87j4NcdSiv-XrxbZ9ntQwwblFoxC/exec';
+  const MAX_GUESTS_PER_SLOT = 6;
+
+  // Cache of { "YYYY-MM-DD": { "HH:MM": guestCount } } to avoid repeat fetches
+  const availabilityCache = {};
+
+  function toISODate(date) {
+    return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  }
+
+  function parseGuestCount(str) {
+    const m = String(str || '1').match(/\d+/);
+    return m ? parseInt(m[0]) : 1;
+  }
+
+  // Parse a booking date string to a local Date (handles ISO and verbose formats)
+  function parseBookingDate(str) {
+    if (!str) return null;
+    const iso = String(str).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (iso) return new Date(+iso[1], +iso[2] - 1, +iso[3]);
+    const clean = str.replace(/^[A-Za-z]+,?\s*/, '');
+    const d = new Date(clean);
+    if (!isNaN(d)) return d;
+    return null;
+  }
+
+  // Extract HH:MM from a time value that may come back as a Sheets date string
+  function parseTimeStr(str) {
+    if (!str) return '';
+    const tMatch = String(str).match(/T(\d{2}:\d{2})/);
+    if (tMatch) return tMatch[1];
+    const hmMatch = String(str).match(/^(\d{1,2}:\d{2})/);
+    if (hmMatch) return hmMatch[1];
+    return String(str);
+  }
+
+  async function fetchAvailability(date) {
+    const key = toISODate(date);
+    if (availabilityCache[key]) return availabilityCache[key];
+    try {
+      const res  = await fetch(GAS_URL + '?action=getBookings');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const bookings = Array.isArray(data) ? data : (data.bookings || []);
+      // Build slot map: { "HH:MM": totalGuests } for the selected date
+      const slotMap = {};
+      bookings.forEach(b => {
+        const bDate = parseBookingDate(b.date || b.Date || '');
+        if (bDate && toISODate(bDate) === key) {
+          const time = parseTimeStr(b.time || b.Time || '');
+          if (time) {
+            slotMap[time] = (slotMap[time] || 0) +
+              parseGuestCount(b.partySize || b.party_size || b['Party Size'] || '1');
+          }
+        }
+      });
+      availabilityCache[key] = slotMap;
+      return slotMap;
+    } catch (e) {
+      return {}; // on error, assume all slots available
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────
+     STATE
+  ───────────────────────────────────────────────────── */
+  const state = {
+    viewYear:  new Date().getFullYear(),
+    viewMonth: new Date().getMonth(), // 0-based
+    selectedDate: null,  // Date object
+    selectedTime: null   // string e.g. "18:00"
+  };
+
+  const MONTH_NAMES = {
+    en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    nl: ['Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December']
+  };
+  const DAY_HEADERS = {
+    en: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    nl: ['Ma','Di','Wo','Do','Vr','Za','Zo']
+  };
+
+  const TIME_SLOTS = {
+    3: ['17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'], // Wed
+    4: ['17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'], // Thu
+    5: ['17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'], // Fri
+    6: ['17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30'], // Sat
+    0: ['17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:30']  // Sun
+  };
+
+  /* ─────────────────────────────────────────────────────
+     CALENDAR
+  ───────────────────────────────────────────────────── */
+  function renderCalendar() {
+    const { viewYear, viewMonth } = state;
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    // Month label
+    document.getElementById('calMonthLabel').textContent =
+      `${MONTH_NAMES[currentLang][viewMonth]} ${viewYear}`;
+
+    // Disable prev button if we're on current month
+    const nowMonth = new Date().getMonth();
+    const nowYear  = new Date().getFullYear();
+    document.getElementById('calPrev').disabled =
+      (viewYear === nowYear && viewMonth === nowMonth);
+
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+
+    // Day headers (Mon first)
+    DAY_HEADERS[currentLang].forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'cal-day-header';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    // First day of month (0=Sun…6=Sat) → convert to Mon-first offset
+    const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+    const offset = (firstDay === 0) ? 6 : firstDay - 1;
+
+    // Empty cells before first day
+    for (let i = 0; i < offset; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day cal-day--empty';
+      grid.appendChild(el);
+    }
+
+    // Days of month
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(viewYear, viewMonth, d);
+      const dow  = date.getDay(); // 0=Sun,1=Mon,…
+      const isPast   = date < today;
+      const isClosed = (dow === 1 || dow === 2); // Mon, Tue
+      const isToday  = date.getTime() === today.getTime();
+      const isSelected = state.selectedDate &&
+        date.getTime() === state.selectedDate.getTime();
+
+      const el = document.createElement('div');
+      el.textContent = d;
+
+      if (isPast || isClosed) {
+        el.className = 'cal-day cal-day--disabled';
+      } else {
+        el.className = 'cal-day';
+        if (isToday)    el.classList.add('cal-day--today');
+        if (isSelected) el.classList.add('cal-day--selected');
+        el.addEventListener('click', () => selectDate(date));
+      }
+
+      grid.appendChild(el);
+    }
+  }
+
+  async function selectDate(date) {
+    state.selectedDate = date;
+    state.selectedTime = null;
+    renderCalendar();
+    setStep(2);
+    document.getElementById('timeCard').classList.remove('hidden');
+    document.getElementById('formCard').classList.add('hidden');
+    setTimeout(() => {
+      document.getElementById('timeCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 60);
+    // Show loading while checking availability
+    const label = document.getElementById('selectedDateLabel');
+    label.textContent = formatDate(date);
+    document.getElementById('timeGrid').innerHTML =
+      '<div style="color:var(--smoke);font-size:0.85rem;padding:0.5rem 0;">Checking availability\u2026</div>';
+    const slotMap = await fetchAvailability(date);
+    renderTimeSlots(slotMap);
+  }
+
+  /* ─────────────────────────────────────────────────────
+     TIME SLOTS
+  ───────────────────────────────────────────────────── */
+  function renderTimeSlots(slotMap = {}) {
+    const date  = state.selectedDate;
+    const dow   = date.getDay();
+    const slots = TIME_SLOTS[dow] || [];
+
+    document.getElementById('selectedDateLabel').textContent = formatDate(date);
+
+    const grid = document.getElementById('timeGrid');
+    grid.innerHTML = '';
+
+    slots.forEach(time => {
+      const booked = slotMap[time] || 0;
+      const full   = booked >= MAX_GUESTS_PER_SLOT;
+      const el = document.createElement('div');
+      if (full) {
+        el.className = 'time-slot time-slot--full';
+        el.innerHTML = `${time}<br><small>Full</small>`;
+      } else {
+        el.className = 'time-slot' + (state.selectedTime === time ? ' time-slot--selected' : '');
+        el.textContent = time;
+        el.addEventListener('click', () => selectTime(time));
+      }
+      grid.appendChild(el);
+    });
+  }
+
+  function selectTime(time) {
+    state.selectedTime = time;
+    renderTimeSlots();
+    document.getElementById('formCard').classList.remove('hidden');
+    renderSummary();
+    setStep(3);
+    setTimeout(() => {
+      document.getElementById('formCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 60);
+  }
+
+  /* ─────────────────────────────────────────────────────
+     SUMMARY STRIP
+  ───────────────────────────────────────────────────── */
+  function renderSummary() {
+    const t = translations[currentLang];
+    const s = document.getElementById('bookingSummary');
+    s.innerHTML = `
+      <div class="summary-item">${t.summary_date} &nbsp;<strong>${formatDate(state.selectedDate)}</strong></div>
+      <div class="summary-item">${t.summary_time} &nbsp;<strong>${state.selectedTime}</strong></div>
+    `;
+  }
+
+  /* ─────────────────────────────────────────────────────
+     STEPS
+  ───────────────────────────────────────────────────── */
+  function setStep(active) {
+    [1,2,3].forEach(n => {
+      const el = document.getElementById(`step${n}`);
+      el.classList.remove('active','done');
+      if (n < active)      el.classList.add('done');
+      else if (n === active) el.classList.add('active');
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────
+     CALENDAR NAV
+  ───────────────────────────────────────────────────── */
+  document.getElementById('calPrev').addEventListener('click', () => {
+    if (state.viewMonth === 0) {
+      state.viewMonth = 11;
+      state.viewYear--;
+    } else {
+      state.viewMonth--;
+    }
+    renderCalendar();
+  });
+
+  document.getElementById('calNext').addEventListener('click', () => {
+    if (state.viewMonth === 11) {
+      state.viewMonth = 0;
+      state.viewYear++;
+    } else {
+      state.viewMonth++;
+    }
+    renderCalendar();
+  });
+
+  /* ─────────────────────────────────────────────────────
+     FORM SUBMIT
+  ───────────────────────────────────────────────────── */
+  document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    document.getElementById('formError').style.display = 'none';
+
+    const required = this.querySelectorAll('[required]');
+    let valid = true;
+
+    required.forEach(el => {
+      el.classList.remove('invalid');
+      if (!el.value.trim()) {
+        el.classList.add('invalid');
+        valid = false;
+      }
+    });
+
+    if (!valid) return;
+
+    const name   = document.getElementById('fname').value.trim();
+    const email  = document.getElementById('femail').value.trim();
+    const phone  = document.getElementById('fphone').value.trim();
+    const guests = document.getElementById('fguests').value;
+    const notes  = document.getElementById('fnotes').value.trim();
+
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = translations[currentLang].confirming;
+    btn.disabled = true;
+
+    const payload = {
+      name:            name,
+      email:           email,
+      phone:           phone,
+      partySize:       guests,
+      date:            toISODate(state.selectedDate),
+      time:            String(state.selectedTime), // plain "HH:MM" string
+      specialRequests: notes
+    };
+
+    // Google Apps Script requires no-cors to avoid preflight CORS rejection.
+    // The response is opaque so we can't read it — we show confirmation on
+    // resolve and only show the error banner on a genuine network failure.
+    fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    })
+      .then(() => {
+        showConfirmation({ name, email, phone, guests, notes });
+      })
+      .catch(() => {
+        btn.innerHTML = translations[currentLang].submit_btn;
+        btn.disabled = false;
+        showError();
+      });
+  });
+
+  /* ─────────────────────────────────────────────────────
+     CONFIRMATION
+  ───────────────────────────────────────────────────── */
+  function showError() {
+    const el = document.getElementById('formError');
+    el.innerHTML = translations[currentLang].error_msg;
+    el.style.display = 'block';
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function showConfirmation(data) {
+    document.getElementById('bookingSection').classList.add('hidden');
+    const sec = document.getElementById('confirmationSection');
+    sec.classList.remove('hidden');
+
+    const t = translations[currentLang];
+    const rows = [
+      { label: t.conf_label_name,  value: data.name },
+      { label: t.conf_label_date,  value: formatDate(state.selectedDate) },
+      { label: t.conf_label_time,  value: state.selectedTime },
+      { label: t.conf_label_party, value: data.guests },
+      { label: t.conf_label_email, value: data.email },
+      { label: t.conf_label_phone, value: data.phone },
+    ];
+
+    if (data.notes) rows.push({ label: t.conf_label_req, value: data.notes });
+
+    document.getElementById('confirmationDetails').innerHTML = rows.map(r => `
+      <div class="conf-row">
+        <span class="conf-row__label">${r.label}</span>
+        <span class="conf-row__value">${r.value}</span>
+      </div>
+    `).join('');
+
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ─────────────────────────────────────────────────────
+     HELPERS
+  ───────────────────────────────────────────────────── */
+  function formatDate(date) {
+    const locale = currentLang === 'nl' ? 'nl-NL' : 'en-GB';
+    return date.toLocaleDateString(locale, {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────
+     INIT
+  ───────────────────────────────────────────────────── */
+  applyLang(currentLang);
+  renderCalendar();
+</script>
+</body>
+</html>
