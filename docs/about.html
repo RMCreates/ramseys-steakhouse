@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Story — Ramsey's Steakhouse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black:#0a0a0a; --charcoal:#141414; --coal:#1e1e1e; --iron:#2c2c2c;
+      --ash:#3d3d3d; --smoke:#6b6b6b; --light:#c8c0b8; --white:#f4f0ea;
+      --red:#b5271e; --red-hi:#d4332a; --gold:#c9a227; --gold-hi:#e0b93a; --gold-dim:#7a601a;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Barlow',sans-serif; background:var(--black); color:var(--light); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+    h1,h2,h3,h4 { font-family:'Playfair Display',serif; color:var(--white); line-height:1.2; }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; }
+    ::-webkit-scrollbar { width:6px; } ::-webkit-scrollbar-track { background:var(--black); } ::-webkit-scrollbar-thumb { background:var(--gold-dim); border-radius:3px; }
+    .container { width:100%; max-width:1140px; margin:0 auto; padding:0 1.25rem; }
+    .section-label { font-family:'Barlow',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:0.75rem; }
+    .divider { width:48px; height:2px; background:var(--gold); margin:1.25rem 0 2rem; }
+    .divider--center { margin-left:auto; margin-right:auto; }
+    .btn { display:inline-block; font-family:'Barlow',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; padding:0.85rem 2rem; border-radius:2px; cursor:pointer; border:none; transition:background 0.2s,color 0.2s,transform 0.15s; }
+    .btn:active { transform:scale(0.97); }
+    .btn--gold { background:var(--gold); color:var(--black); } .btn--gold:hover { background:var(--gold-hi); }
+    .btn--outline { background:transparent; color:var(--gold); border:1px solid var(--gold); } .btn--outline:hover { background:var(--gold); color:var(--black); }
+    #nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0; background:rgba(10,10,10,0.85); transition:background 0.3s,box-shadow 0.3s; }
+    #nav.scrolled { background:rgba(10,10,10,0.97); box-shadow:0 2px 24px rgba(0,0,0,0.6); }
+    .nav-inner { display:flex; align-items:center; justify-content:space-between; padding:12px 48px; }
+    @media(max-width:767px){ .nav-inner { padding:10px 1.25rem; } }
+    .nav-logo { display:flex; align-items:center; flex-shrink:0; }
+    .nav-links { display:none; list-style:none; gap:2rem; align-items:center; }
+    @media(min-width:768px){ .nav-links { display:flex; } }
+    .nav-links a { font-size:13px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--smoke); transition:color 0.2s; }
+    .nav-links a:hover { color:#c9a84c; }
+    .nav-right { display:none; align-items:center; gap:1.25rem; }
+    @media(min-width:768px){ .nav-right { display:flex; } }
+    .lang-switcher { display:flex; align-items:center; gap:2px; }
+    .lang-btn { background:none; border:none; color:var(--smoke); cursor:pointer; font-family:'Barlow',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.1em; padding:3px 5px; transition:color 0.2s; line-height:1; }
+    .lang-btn:hover { color:var(--light); } .lang-btn.active { color:#c9a84c; }
+    .lang-sep { color:var(--ash); font-size:0.7rem; line-height:1; user-select:none; }
+    .nav-burger { display:flex; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    @media(min-width:768px){ .nav-burger { display:none; } }
+    .nav-burger span { display:block; width:24px; height:2px; background:var(--white); border-radius:2px; transition:transform 0.25s,opacity 0.25s; }
+    .nav-burger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity:0; }
+    .nav-burger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .nav-drawer { display:none; flex-direction:column; background:rgba(10,10,10,0.99); border-top:1px solid var(--iron); padding:1.5rem 1.25rem 2rem; gap:1.25rem; }
+    .nav-drawer.open { display:flex; }
+    @media(min-width:768px){ .nav-drawer { display:none !important; } }
+    .nav-drawer a { font-size:0.85rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--light); padding:0.4rem 0; border-bottom:1px solid var(--iron); }
+    .nav-drawer .btn { width:100%; text-align:center; margin-top:0.5rem; }
+    .page-hero { padding:9rem 0 4rem; background:var(--charcoal); position:relative; border-bottom:1px solid var(--iron); }
+    .page-hero h1 { font-size:clamp(2.4rem,6vw,4rem); font-weight:700; margin-bottom:0.5rem; }
+    .page-hero .hero-sub { font-size:1rem; color:var(--smoke); margin-top:0.75rem; max-width:560px; }
+    #footer { background:var(--charcoal); border-top:1px solid var(--iron); padding:4rem 0 2rem; }
+    .footer-grid { display:grid; grid-template-columns:1fr; gap:2.5rem; margin-bottom:3rem; }
+    @media(min-width:640px){ .footer-grid { grid-template-columns:1fr 1fr; } }
+    @media(min-width:960px){ .footer-grid { grid-template-columns:2fr 1fr 1fr 1fr; } }
+    .footer-brand__name { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--white); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:0.25rem; }
+    .footer-brand__sub { font-size:0.62rem; font-weight:500; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+    .footer-brand p { font-size:0.85rem; color:var(--smoke); line-height:1.7; max-width:260px; }
+    .footer-col h4 { font-family:'Barlow',sans-serif; font-size:0.68rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:1.25rem; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { font-size:0.85rem; color:var(--smoke); margin-bottom:0.5rem; line-height:1.5; }
+    .footer-col ul li a { color:var(--smoke); transition:color 0.2s; } .footer-col ul li a:hover { color:var(--gold); }
+    .footer-hours-row { display:flex; justify-content:space-between; font-size:0.82rem; color:var(--smoke); padding:0.35rem 0; border-bottom:1px solid var(--iron); }
+    .footer-hours-row:first-child { border-top:1px solid var(--iron); }
+    .footer-hours-row span:last-child { color:var(--light); }
+    .footer-bottom { border-top:1px solid var(--iron); padding-top:1.5rem; display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:space-between; align-items:center; }
+    .footer-bottom p { font-size:0.75rem; color:var(--ash); }
+    .footer-bottom a { color:var(--ash); } .footer-bottom a:hover { color:var(--gold); }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+    .fade-up { animation:fadeUp 0.6s ease both; }
+    .fade-up--d1 { animation-delay:0.1s; } .fade-up--d2 { animation-delay:0.22s; } .fade-up--d3 { animation-delay:0.36s; }
+
+    /* ABOUT PAGE */
+    .about-story { padding: 5rem 0; }
+    .about-story p { font-size:1.05rem; color:var(--light); line-height:1.8; max-width:720px; margin-bottom:1.25rem; }
+    .about-story p strong { color:var(--white); font-weight:600; }
+    .about-story h2 { font-size:clamp(1.75rem,4vw,2.5rem); margin-bottom:0.5rem; }
+    .about-images { padding:3rem 0 5rem; background:var(--coal); border-top:1px solid var(--iron); border-bottom:1px solid var(--iron); }
+    .image-grid { display:grid; grid-template-columns:1fr; gap:1.5rem; margin-top:2rem; }
+    @media(min-width:640px){ .image-grid { grid-template-columns:1fr 1fr; } }
+    @media(min-width:900px){ .image-grid { grid-template-columns:1fr 1fr 1fr; } }
+    .image-placeholder { background:var(--charcoal); border:1px solid var(--iron); border-radius:3px; min-height:280px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.75rem; transition:border-color 0.2s; }
+    .image-placeholder:hover { border-color:var(--gold-dim); }
+    .image-placeholder__label { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--white); }
+    .image-placeholder__note { font-size:0.75rem; color:var(--ash); letter-spacing:0.1em; text-transform:uppercase; }
+    .about-stats-section { padding:5rem 0; }
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:2rem; margin-top:2.5rem; }
+    .stat-block { text-align:center; }
+    .stat-block__num { font-family:'Playfair Display',serif; font-size:clamp(3rem,8vw,5rem); font-weight:900; color:var(--gold); line-height:1; margin-bottom:0.5rem; }
+    .stat-block__label { font-family:'Barlow',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--smoke); }
+    .stat-block__unit { font-size:0.7rem; color:var(--ash); margin-top:0.25rem; }
+    .reviews-section { padding:4rem 0; background:var(--coal); border-top:1px solid var(--iron); text-align:center; }
+    .reviews-section h2 { font-size:1.75rem; margin-bottom:0.75rem; }
+    .reviews-section p { color:var(--smoke); margin-bottom:2rem; font-size:0.95rem; }
+    .reviews-btn { display:inline-flex; align-items:center; gap:0.6rem; background:var(--gold); color:var(--black); font-family:'Barlow',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; padding:1rem 2rem; border-radius:2px; transition:background 0.2s,transform 0.15s; }
+    .reviews-btn:hover { background:var(--gold-hi); transform:translateY(-2px); }
+  </style>
+</head>
+<body>
+
+<header id="nav">
+  <div class="container">
+    <nav class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="Ramsey's Steakhouse" style="height:80px;width:auto;display:block;" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="menu.html" data-i18n="nav_menu">Menu</a></li>
+        <li><a href="booking.html" data-i18n="nav_reservations">Reservations</a></li>
+        <li><a href="about.html" data-i18n="nav_about">About</a></li>
+        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <span class="lang-sep">|</span>
+          <button class="lang-btn" data-lang="nl">NL</button>
+        </div>
+        <a href="booking.html" class="btn btn--gold" data-i18n="nav_reserve">Reserve a Table</a>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+  <div class="nav-drawer" id="navDrawer">
+    <a href="menu.html" data-i18n="nav_menu">Menu</a>
+    <a href="booking.html" data-i18n="nav_reservations">Reservations</a>
+    <a href="about.html" data-i18n="nav_about">About</a>
+    <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    <div class="lang-switcher" style="padding:0.4rem 0;border-bottom:1px solid var(--iron);">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <span class="lang-sep" style="margin:0 4px;">|</span>
+      <button class="lang-btn" data-lang="nl">NL</button>
+    </div>
+    <a href="booking.html" class="btn btn--gold" data-i18n="nav_reserve">Reserve a Table</a>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="section-label fade-up" data-i18n="hero_eyebrow">Ramsey's Steakhouse &middot; Est. 2026</span>
+    <h1 class="fade-up fade-up--d1" data-i18n="page_title">Our Story</h1>
+    <p class="hero-sub fade-up fade-up--d2" data-i18n="page_sub">A small room. A tight team. Standards that don't move.</p>
+  </div>
+</section>
+
+<section class="about-story">
+  <div class="container">
+    <span class="section-label" data-i18n="about_label">About Us</span>
+    <h2 data-i18n="about_h2">No Gimmicks. Just Beef.</h2>
+    <div class="divider"></div>
+    <p data-i18n="about_p1">Ramsey's Steakhouse was born from a simple obsession: <strong>the perfect steak</strong>. Not drowned in sauce, not buried under garnish — just exceptional meat, honest fire, and the skill to know when to leave it alone.</p>
+    <p data-i18n="about_p2">Our cuts are sourced directly from trusted Dutch and European farms, dry-aged in-house, and grilled over live charcoal by chefs who treat their craft with the seriousness it deserves. Every plate that leaves our kitchen has been earned.</p>
+    <p data-i18n="about_p3">We are located in the heart of Groningen. A small room. A tight team. Standards that don't move.</p>
+  </div>
+</section>
+
+<section class="about-images">
+  <div class="container">
+    <span class="section-label" data-i18n="photos_label">The Restaurant</span>
+    <div class="image-grid">
+      <div class="image-placeholder">
+        <div class="image-placeholder__label" data-i18n="img1_label">The Kitchen</div>
+        <div class="image-placeholder__note" data-i18n="img_note">Photo coming soon</div>
+      </div>
+      <div class="image-placeholder">
+        <div class="image-placeholder__label" data-i18n="img2_label">The Grill</div>
+        <div class="image-placeholder__note" data-i18n="img_note">Photo coming soon</div>
+      </div>
+      <div class="image-placeholder">
+        <div class="image-placeholder__label" data-i18n="img3_label">The Team</div>
+        <div class="image-placeholder__note" data-i18n="img_note">Photo coming soon</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-stats-section">
+  <div class="container">
+    <span class="section-label" style="text-align:center;display:block;" data-i18n="stats_label">By the Numbers</span>
+    <div class="stats-row">
+      <div class="stat-block">
+        <div class="stat-block__num">28</div>
+        <div class="stat-block__label" data-i18n="stat1_label">Days Dry Aged</div>
+        <div class="stat-block__unit" data-i18n="stat1_unit">Minimum</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block__num">800&deg;</div>
+        <div class="stat-block__label" data-i18n="stat2_label">Sear Temperature</div>
+        <div class="stat-block__unit" data-i18n="stat2_unit">Celsius</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-block__num" data-i18n="stat3_num">Premium</div>
+        <div class="stat-block__label" data-i18n="stat3_label">Cuts Only</div>
+        <div class="stat-block__unit" data-i18n="stat3_unit">No exceptions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews-section">
+  <div class="container">
+    <span class="section-label" style="display:block;text-align:center;" data-i18n="reviews_label">Guest Reviews</span>
+    <h2 data-i18n="reviews_h2">What Our Guests Say</h2>
+    <p data-i18n="reviews_p">We let our food do the talking. Read what our guests have to say on Google.</p>
+    <a href="https://search.google.com/local/writereview?placeid=PLACEHOLDER" target="_blank" rel="noopener" class="reviews-btn" data-i18n="reviews_btn">Leave us a Review on Google</a>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand__name">Ramsey's</div>
+        <div class="footer-brand__sub" data-i18n="footer_sub">Steakhouse &middot; Groningen</div>
+        <p data-i18n="footer_p">Premium steakhouse in the heart of Groningen. No compromises, no pretense. Just fire and beef, done right.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_nav_h4">Navigate</h4>
+        <ul>
+          <li><a href="menu.html" data-i18n="nav_menu">Menu</a></li>
+          <li><a href="booking.html" data-i18n="nav_reservations">Reservations</a></li>
+          <li><a href="about.html" data-i18n="nav_about">About</a></li>
+          <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_hours_h4">Opening Hours</h4>
+        <div class="footer-hours-row"><span data-i18n="hours_mon">Mon &ndash; Tue</span><span data-i18n="hours_closed">Closed</span></div>
+        <div class="footer-hours-row"><span data-i18n="hours_wed">Wed &ndash; Thu</span><span>17:30 &ndash; 22:00</span></div>
+        <div class="footer-hours-row"><span data-i18n="hours_fri">Fri &ndash; Sat</span><span>17:00 &ndash; 22:30</span></div>
+        <div class="footer-hours-row"><span data-i18n="hours_sun">Sunday</span><span>17:00 &ndash; 21:30</span></div>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer_contact_h4">Contact</h4>
+        <ul>
+          <li>Schuitendiep 56<br>9711 RE Groningen</li>
+          <li style="margin-top:0.75rem"><a href="tel:+31500000000">+31 50 000 0000</a></li>
+          <li><a href="mailto:info@ramseyssteakhouse.nl">info@ramseyssteakhouse.nl</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-i18n="footer_copy">&copy; 2026 Ramsey's Steakhouse. All rights reserved.</p>
+      <p><a href="#" data-i18n="footer_privacy">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="#" data-i18n="footer_terms">Terms</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* nav */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); }, { passive: true });
+const burger = document.getElementById('navBurger');
+const drawer = document.getElementById('navDrawer');
+burger.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+});
+function closeDrawer() {
+  drawer.classList.remove('open');
+  burger.classList.remove('open');
+  burger.setAttribute('aria-expanded', false);
+}
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+/* i18n */
+const translations = { en: {}, nl: {} };
+let currentLang = 'en';
+function applyLang(lang) {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (translations[lang] && translations[lang][key] !== undefined) el.innerHTML = translations[lang][key];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  document.documentElement.lang = lang;
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+}
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.lang-btn');
+  if (btn) applyLang(btn.dataset.lang);
+});
+
+Object.assign(translations, {
+  en: {
+    nav_menu:'Menu', nav_reservations:'Reservations', nav_about:'About', nav_contact:'Contact', nav_reserve:'Reserve a Table',
+    hero_eyebrow:"Ramsey's Steakhouse \u00b7 Est. 2026", page_title:'Our Story', page_sub:"A small room. A tight team. Standards that don't move.",
+    about_label:'About Us', about_h2:'No Gimmicks. Just Beef.',
+    about_p1:"Ramsey's Steakhouse was born from a simple obsession: <strong>the perfect steak</strong>. Not drowned in sauce, not buried under garnish \u2014 just exceptional meat, honest fire, and the skill to know when to leave it alone.",
+    about_p2:'Our cuts are sourced directly from trusted Dutch and European farms, dry-aged in-house, and grilled over live charcoal by chefs who treat their craft with the seriousness it deserves. Every plate that leaves our kitchen has been earned.',
+    about_p3:"We are located in the heart of Groningen. A small room. A tight team. Standards that don't move.",
+    photos_label:'The Restaurant', img1_label:'The Kitchen', img2_label:'The Grill', img3_label:'The Team', img_note:'Photo coming soon',
+    stats_label:'By the Numbers',
+    stat1_label:'Days Dry Aged', stat1_unit:'Minimum',
+    stat2_label:'Sear Temperature', stat2_unit:'Celsius',
+    stat3_num:'Premium', stat3_label:'Cuts Only', stat3_unit:'No exceptions',
+    reviews_label:'Guest Reviews', reviews_h2:'What Our Guests Say',
+    reviews_p:'We let our food do the talking. Read what our guests have to say on Google.',
+    reviews_btn:'Leave us a Review on Google',
+    footer_sub:'Steakhouse \u00b7 Groningen', footer_p:'Premium steakhouse in the heart of Groningen. No compromises, no pretense. Just fire and beef, done right.',
+    footer_nav_h4:'Navigate', footer_hours_h4:'Opening Hours', footer_contact_h4:'Contact',
+    hours_mon:'Mon \u2013 Tue', hours_closed:'Closed', hours_wed:'Wed \u2013 Thu', hours_fri:'Fri \u2013 Sat', hours_sun:'Sunday',
+    footer_copy:'\u00a9 2026 Ramsey\'s Steakhouse. All rights reserved.', footer_privacy:'Privacy Policy', footer_terms:'Terms'
+  },
+  nl: {
+    nav_menu:'Menu', nav_reservations:'Reserveringen', nav_about:'Over Ons', nav_contact:'Contact', nav_reserve:'Reserveer een tafel',
+    hero_eyebrow:"Ramsey's Steakhouse \u00b7 Opgericht 2026", page_title:'Ons Verhaal', page_sub:'Een kleine ruimte. Een hecht team. Normen die niet verschuiven.',
+    about_label:'Over Ons', about_h2:'Geen Fratsen. Gewoon Vlees.',
+    about_p1:"Ramsey's Steakhouse is geboren uit een simpele obsessie: <strong>de perfecte steak</strong>. Niet verdronken in saus, niet begraven onder garnering \u2014 gewoon uitzonderlijk vlees, eerlijk vuur, en de kunde om het los te laten wanneer dat nodig is.",
+    about_p2:'Onze cuts worden direct gesourced bij vertrouwde Nederlandse en Europese boerderijen, in huis dry-aged en gegrild boven levend houtskool door koks die hun vak met de nodige ernst benaderen. Elk bord dat onze keuken verlaat is verdiend.',
+    about_p3:'We zijn gevestigd in het hart van Groningen. Een kleine ruimte. Een hecht team. Normen die niet verschuiven.',
+    photos_label:'Het Restaurant', img1_label:'De Keuken', img2_label:'De Grill', img3_label:'Het Team', img_note:'Foto binnenkort beschikbaar',
+    stats_label:'In Cijfers',
+    stat1_label:'Dagen Dry Aged', stat1_unit:'Minimaal',
+    stat2_label:'Schroei Temperatuur', stat2_unit:'Celsius',
+    stat3_num:'Premium', stat3_label:'Alleen Premium Cuts', stat3_unit:'Zonder uitzondering',
+    reviews_label:'Gastrecensies', reviews_h2:'Wat Onze Gasten Zeggen',
+    reviews_p:'We laten ons eten voor zich spreken. Lees wat onze gasten zeggen op Google.',
+    reviews_btn:'Laat een Recensie Achter op Google',
+    footer_sub:'Steakhouse \u00b7 Groningen', footer_p:'Premium steakhouse in het hart van Groningen. Geen compromissen, geen pretentie. Alleen vuur en vlees, zoals het hoort.',
+    footer_nav_h4:'Navigeer', footer_hours_h4:'Openingstijden', footer_contact_h4:'Contact',
+    hours_mon:'Ma \u2013 Di', hours_closed:'Gesloten', hours_wed:'Wo \u2013 Do', hours_fri:'Vr \u2013 Za', hours_sun:'Zondag',
+    footer_copy:'\u00a9 2026 Ramsey\'s Steakhouse. Alle rechten voorbehouden.', footer_privacy:'Privacybeleid', footer_terms:'Voorwaarden'
+  }
+});
+
+/* MUST BE LAST LINE */
+(function(){ var s=localStorage.getItem('lang'); if(s && s!=='en') applyLang(s); }());
+</script>
+</body>
+</html>
