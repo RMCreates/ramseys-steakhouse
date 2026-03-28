@@ -191,8 +191,8 @@
           <table class="hours-table">
             <tr><td data-i18n="hours_mon">Mon &ndash; Tue</td><td data-i18n="hours_closed">Closed</td></tr>
             <tr><td data-i18n="hours_wed">Wed &ndash; Thu</td><td>17:30 &ndash; 22:00</td></tr>
-            <tr><td data-i18n="hours_fri">Fri &ndash; Sat</td><td>17:00 &ndash; 22:30</td></tr>
-            <tr><td data-i18n="hours_sun">Sunday</td><td>17:00 &ndash; 21:30</td></tr>
+            <tr><td data-i18n="hours_fri">Fri &ndash; Sat</td><td>17:00 &ndash; 23:00</td></tr>
+            <tr><td data-i18n="hours_sun">Sunday</td><td>17:30 &ndash; 21:30</td></tr>
           </table>
         </div>
       </div>
@@ -200,6 +200,7 @@
       <div class="map-wrap">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2390.3!2d6.5665!3d53.2194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c83272cde8a48f%3A0x1!2sSchuitendiep%2056%2C%209711%20RE%20Groningen!5e0!3m2!1sen!2snl!4v1"
+          width="100%"
           allowfullscreen
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
@@ -214,7 +215,7 @@
 <section class="reviews-section">
   <div class="container">
     <span class="section-label" style="display:block;text-align:center;" data-i18n="reviews_label">Google Reviews</span>
-    <h2 data-i18n="reviews_h2">What Our Guests Say</h2>
+    <h2 data-i18n="reviews_h2">What our guests say</h2>
     <p data-i18n="reviews_p">We're proud of every plate we serve. See what our guests say on Google.</p>
     <div class="reviews-btns">
       <a href="https://www.google.com/maps/place/PLACEHOLDER" target="_blank" rel="noopener" class="reviews-btn" data-i18n="reviews_read">Read our Google Reviews</a>
@@ -226,10 +227,10 @@
 <section class="contact-form-section">
   <div class="container">
     <span class="section-label" data-i18n="form_label">Get in Touch</span>
-    <h2 data-i18n="form_h2">Send Us a Message</h2>
+    <h2 data-i18n="form_h2">Get in Touch</h2>
     <div class="divider"></div>
     <div class="contact-form">
-      <form id="contactForm" novalidate>
+      <form id="contactForm" action="#" novalidate>
         <div class="form-field">
           <label for="cf-name" data-i18n="form_name_label">Full Name</label>
           <input type="text" id="cf-name" placeholder="Jan de Vries" required />
@@ -273,8 +274,8 @@
         <h4 data-i18n="footer_hours_h4">Opening Hours</h4>
         <div class="footer-hours-row"><span data-i18n="hours_mon">Mon &ndash; Tue</span><span data-i18n="hours_closed">Closed</span></div>
         <div class="footer-hours-row"><span data-i18n="hours_wed">Wed &ndash; Thu</span><span>17:30 &ndash; 22:00</span></div>
-        <div class="footer-hours-row"><span data-i18n="hours_fri">Fri &ndash; Sat</span><span>17:00 &ndash; 22:30</span></div>
-        <div class="footer-hours-row"><span data-i18n="hours_sun">Sunday</span><span>17:00 &ndash; 21:30</span></div>
+        <div class="footer-hours-row"><span data-i18n="hours_fri">Fri &ndash; Sat</span><span>17:00 &ndash; 23:00</span></div>
+        <div class="footer-hours-row"><span data-i18n="hours_sun">Sunday</span><span>17:30 &ndash; 21:30</span></div>
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer_contact_h4">Contact</h4>
@@ -348,10 +349,10 @@ Object.assign(translations, {
     detail_address_label:'Address', detail_phone_label:'Phone', detail_email_label:'Email',
     detail_instagram_label:'Instagram', detail_hours_label:'Opening Hours',
     hours_mon:'Mon \u2013 Tue', hours_closed:'Closed', hours_wed:'Wed \u2013 Thu', hours_fri:'Fri \u2013 Sat', hours_sun:'Sunday',
-    reviews_label:'Google Reviews', reviews_h2:'What Our Guests Say',
+    reviews_label:'Google Reviews', reviews_h2:'What our guests say',
     reviews_p:"We're proud of every plate we serve. See what our guests say on Google.",
     reviews_read:'Read our Google Reviews', reviews_write:'Leave a Review',
-    form_label:'Get in Touch', form_h2:'Send Us a Message',
+    form_label:'Get in Touch', form_h2:'Get in Touch',
     form_name_label:'Full Name', form_email_label:'Email Address', form_msg_label:'Message',
     form_submit:'Send Message',
     form_success_h:'Message Sent', form_success_p:"Thank you for reaching out. We'll be in touch shortly.",
@@ -365,10 +366,10 @@ Object.assign(translations, {
     detail_address_label:'Adres', detail_phone_label:'Telefoon', detail_email_label:'E-mail',
     detail_instagram_label:'Instagram', detail_hours_label:'Openingstijden',
     hours_mon:'Ma \u2013 Di', hours_closed:'Gesloten', hours_wed:'Wo \u2013 Do', hours_fri:'Vr \u2013 Za', hours_sun:'Zondag',
-    reviews_label:'Google Reviews', reviews_h2:'Wat Onze Gasten Zeggen',
+    reviews_label:'Google Reviews', reviews_h2:'Wat onze gasten zeggen',
     reviews_p:'We zijn trots op elk bord dat we serveren. Bekijk wat onze gasten zeggen op Google.',
     reviews_read:'Lees onze Google Reviews', reviews_write:'Schrijf een Recensie',
-    form_label:'Neem Contact Op', form_h2:'Stuur Ons een Bericht',
+    form_label:'Neem Contact Op', form_h2:'Neem Contact Op',
     form_name_label:'Volledige Naam', form_email_label:'E-mailadres', form_msg_label:'Bericht',
     form_submit:'Verstuur Bericht',
     form_success_h:'Bericht Verzonden', form_success_p:'Bedankt voor uw bericht. We nemen binnenkort contact met u op.',
