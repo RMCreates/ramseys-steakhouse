@@ -893,10 +893,11 @@
 
   // Normalize booking fields from GAS to a consistent shape
   function normalizeBooking(b) {
+    console.log('Raw booking object from Google Sheet:', b);
     return {
       name:            b.name || b.Name || '',
       email:           b.email || b.Email || '',
-      phone:           b.phone || b.Phone || '',
+      phone:           b.Phone || b.phone || b['Phone'] || b['phone'] || '',
       partySize:       b.partySize || b.party_size || b['Party Size'] || '',
       date:            b.date || b.Date || '',
       time:            formatTime(b.time || b.Time || ''),
@@ -916,6 +917,16 @@
     const d = new Date(clean);
     if (!isNaN(d)) return d;
     return null;
+  }
+
+  // Format a date string as "Wednesday 26 March 2026"
+  const DAY_NAMES   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTH_FULL  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function formatDate(str) {
+    if (!str) return '';
+    const d = parseDate(str);
+    if (!d) return String(str);
+    return `${DAY_NAMES[d.getDay()]} ${d.getDate()} ${MONTH_FULL[d.getMonth()]} ${d.getFullYear()}`;
   }
 
   /* ─────────────────────────────────────────────────
@@ -1045,7 +1056,7 @@
       tbody.innerHTML = arr.map(b => `
         <tr>
           <td class="td-name">${esc(b.name)}</td>
-          <td>${esc(b.date)}</td>
+          <td>${formatDate(b.date)}</td>
           <td class="td-time">${esc(b.time)}</td>
           <td><span class="party-badge">${esc(b.partySize)}</span></td>
           <td>${esc(b.phone)}</td>

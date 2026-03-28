@@ -1003,6 +1003,269 @@
       #footer  { padding: 3rem 0 1.5rem; }
     }
   </style>
+
+  <style>
+    /* ─── BOOKING SIDEBAR ──────────────────────────────────── */
+
+    #bk-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.52);
+      z-index: 1100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    #bk-overlay.bk-visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #bk-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 380px;
+      height: 100%;
+      background: #1a1410;
+      z-index: 1101;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: -8px 0 48px rgba(0,0,0,0.7);
+    }
+    #bk-panel.bk-visible {
+      transform: translateX(0);
+    }
+    @media (max-width: 480px) {
+      #bk-panel { width: 100%; }
+    }
+
+    /* close button */
+    #bk-close {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(201,162,39,0.35);
+      border-radius: 50%;
+      background: rgba(0,0,0,0.35);
+      color: var(--gold);
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    #bk-close:hover { background: rgba(192,57,43,0.6); border-color: var(--red-hi); color: #fff; }
+
+    /* red header bar */
+    .bk-header {
+      background: #c0392b;
+      padding: 1.1rem 1.5rem 1rem 3.5rem;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .bk-header-label {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.18rem;
+    }
+    .bk-header-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.06em;
+    }
+
+    /* scrollable body */
+    .bk-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.4rem 1.5rem 1.8rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold-dim) transparent;
+    }
+    .bk-body::-webkit-scrollbar { width: 4px; }
+    .bk-body::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+    .bk-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+    .bk-sub {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.78rem;
+      color: var(--smoke);
+      letter-spacing: 0.04em;
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .bk-sub::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 1px;
+      background: var(--gold-dim);
+      flex-shrink: 0;
+    }
+
+    /* form fields */
+    .bk-field {
+      margin-bottom: 0.9rem;
+    }
+    .bk-field label {
+      display: block;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 0.38rem;
+    }
+    .bk-field input,
+    .bk-field select {
+      width: 100%;
+      background: #0f0d0b;
+      border: 1px solid var(--iron);
+      border-radius: 3px;
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.88rem;
+      padding: 0.6rem 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .bk-field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b6b' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+      padding-right: 2.2rem;
+      cursor: pointer;
+    }
+    .bk-field input:focus,
+    .bk-field select:focus { border-color: var(--gold-dim); }
+    .bk-field input.bk-error,
+    .bk-field select.bk-error { border-color: var(--red-hi); }
+    .bk-field input::placeholder { color: var(--ash); }
+    .bk-field input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(0.5);
+      cursor: pointer;
+    }
+
+    .bk-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .bk-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--iron);
+      margin: 1rem 0;
+    }
+
+    .bk-submit {
+      width: 100%;
+      background: var(--gold);
+      color: #0a0a0a;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.85rem 1rem;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .bk-submit:hover { background: var(--gold-hi); transform: translateY(-1px); }
+    .bk-submit:active { transform: translateY(0); }
+    .bk-submit:disabled { background: var(--ash); color: var(--smoke); cursor: not-allowed; transform: none; }
+
+    .bk-privacy {
+      font-size: 0.7rem;
+      color: var(--ash);
+      text-align: center;
+      margin-top: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* success state */
+    #bk-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      height: 100%;
+    }
+    #bk-success.bk-show { display: flex; }
+    .bk-success-icon {
+      width: 52px;
+      height: 52px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      color: var(--gold);
+      font-size: 1.4rem;
+    }
+    .bk-success-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--white);
+      margin-bottom: 0.65rem;
+    }
+    .bk-success-msg {
+      font-size: 0.85rem;
+      color: var(--smoke);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .bk-success-close {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: none;
+      border: 1px solid var(--gold-dim);
+      border-radius: 3px;
+      padding: 0.55rem 1.2rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .bk-success-close:hover { background: var(--gold); color: #0a0a0a; }
+  </style>
 </head>
 <body>
 
@@ -1557,9 +1820,9 @@
       <div class="footer-col">
         <h4 data-i18n="footer_contact_h4">Contact</h4>
         <ul>
-          <li>Herestraat 00<br>9711 LM Groningen</li>
+          <li>Schuitendiep 56<br>9711 RE Groningen</li>
           <li style="margin-top:0.75rem"><a href="tel:+31500000000">+31 50 000 0000</a></li>
-          <li><a href="mailto:info@remsys.nl">info@remsys.nl</a></li>
+          <li><a href="mailto:info@ramseyssteakhouse.nl">info@ramseyssteakhouse.nl</a></li>
         </ul>
       </div>
 
@@ -1839,6 +2102,192 @@
       window.scrollTo({ top, behavior: 'smooth' });
     });
   });
+</script>
+
+<!-- ═══════════════════════════════════════════════════════
+     BOOKING SIDEBAR
+════════════════════════════════════════════════════════ -->
+
+<div id="bk-overlay" role="presentation" aria-hidden="true"></div>
+
+<aside id="bk-panel" role="dialog" aria-modal="true" aria-label="Reserve a table">
+
+  <button id="bk-close" aria-label="Close reservation panel">&#x2715;</button>
+
+  <div class="bk-header">
+    <span class="bk-header-label">Reserve</span>
+    <span class="bk-header-brand">RAMSEY'S</span>
+  </div>
+
+  <!-- Form view -->
+  <div class="bk-body" id="bk-form-wrap">
+
+    <h2 class="bk-headline">Reserve Your Table</h2>
+    <p class="bk-sub">Schuitendiep 56, Groningen</p>
+
+    <form id="bk-form" novalidate autocomplete="off">
+
+      <div class="bk-row-2">
+        <div class="bk-field">
+          <label for="bk-date">Date</label>
+          <input type="date" id="bk-date" name="date" required />
+        </div>
+        <div class="bk-field">
+          <label for="bk-time">Time</label>
+          <select id="bk-time" name="time" required>
+            <option value="" disabled selected>Select time</option>
+            <option value="17:30">17:30</option>
+            <option value="18:00">18:00</option>
+            <option value="18:30">18:30</option>
+            <option value="19:00">19:00</option>
+            <option value="19:30">19:30</option>
+            <option value="20:00">20:00</option>
+            <option value="20:30">20:30</option>
+            <option value="21:00">21:00</option>
+            <option value="21:30">21:30</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bk-field">
+        <label for="bk-guests">Party Size</label>
+        <select id="bk-guests" name="guests" required>
+          <option value="" disabled selected>Select guests</option>
+          <option value="1">1 guest</option>
+          <option value="2">2 guests</option>
+          <option value="3">3 guests</option>
+          <option value="4">4 guests</option>
+          <option value="5">5 guests</option>
+          <option value="6">6 guests</option>
+          <option value="7">7 guests</option>
+          <option value="8+">8+ guests (group)</option>
+        </select>
+      </div>
+
+      <div class="bk-divider"></div>
+
+      <div class="bk-field">
+        <label for="bk-name">Full Name</label>
+        <input type="text" id="bk-name" name="name" placeholder="Jan de Vries" required />
+      </div>
+
+      <div class="bk-field">
+        <label for="bk-phone">Phone Number</label>
+        <input type="tel" id="bk-phone" name="phone" placeholder="+31 50 000 0000" required />
+      </div>
+
+      <button type="submit" class="bk-submit" id="bk-submit-btn">Confirm Reservation</button>
+
+      <p class="bk-privacy">Your details are used only to confirm your reservation and are never shared.</p>
+
+    </form>
+  </div>
+
+  <!-- Success view -->
+  <div id="bk-success">
+    <div class="bk-success-icon">&#10003;</div>
+    <h3 class="bk-success-title">Table Reserved</h3>
+    <p class="bk-success-msg">Thank you. We'll send a confirmation shortly. We look forward to welcoming you.</p>
+    <button class="bk-success-close" id="bk-success-close">Close</button>
+  </div>
+
+</aside>
+
+<script>
+  /* ── BOOKING SIDEBAR ───────────────────────────────────────── */
+  (function () {
+    const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+    const SESSION_KEY = 'bk_dismissed';
+
+    const overlay  = document.getElementById('bk-overlay');
+    const panel    = document.getElementById('bk-panel');
+    const closeBtn = document.getElementById('bk-close');
+    const form     = document.getElementById('bk-form');
+    const formWrap = document.getElementById('bk-form-wrap');
+    const success  = document.getElementById('bk-success');
+    const submitBtn= document.getElementById('bk-submit-btn');
+    const successClose = document.getElementById('bk-success-close');
+
+    function openSidebar() {
+      overlay.classList.add('bk-visible');
+      panel.classList.add('bk-visible');
+      document.body.style.overflow = 'hidden';
+      panel.focus();
+    }
+
+    function closeSidebar() {
+      overlay.classList.remove('bk-visible');
+      panel.classList.remove('bk-visible');
+      document.body.style.overflow = '';
+      sessionStorage.setItem(SESSION_KEY, '1');
+    }
+
+    // Auto-open after 1.5s if not dismissed this session
+    if (!sessionStorage.getItem(SESSION_KEY)) {
+      setTimeout(openSidebar, 1500);
+    }
+
+    overlay.addEventListener('click', closeSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    successClose.addEventListener('click', closeSidebar);
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && panel.classList.contains('bk-visible')) {
+        closeSidebar();
+      }
+    });
+
+    // Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('bk-date').setAttribute('min', today);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Validate
+      let valid = true;
+      form.querySelectorAll('[required]').forEach(function (el) {
+        el.classList.remove('bk-error');
+        if (!el.value.trim()) {
+          el.classList.add('bk-error');
+          valid = false;
+        }
+      });
+      if (!valid) return;
+
+      submitBtn.textContent = 'Confirming…';
+      submitBtn.disabled = true;
+
+      const payload = {
+        name:   document.getElementById('bk-name').value.trim(),
+        phone:  document.getElementById('bk-phone').value.trim(),
+        date:   document.getElementById('bk-date').value,
+        time:   document.getElementById('bk-time').value,
+        guests: document.getElementById('bk-guests').value
+      };
+
+      if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+        .then(function () { showSuccess(); })
+        .catch(function () { showSuccess(); }); // show success even on no-cors opaque response
+      } else {
+        // No script URL configured — simulate
+        setTimeout(showSuccess, 900);
+      }
+    });
+
+    function showSuccess() {
+      formWrap.style.display = 'none';
+      success.classList.add('bk-show');
+    }
+
+  }());
 </script>
 
 </body>
