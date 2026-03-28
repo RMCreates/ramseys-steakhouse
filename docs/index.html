@@ -293,9 +293,29 @@
     .hero-bg {
       position: absolute;
       inset: 0;
+      /* Static fallback (always present, video sits on top on desktop) */
       background:
-        linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.75) 60%, rgba(10,10,10,1) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.75) 100%),
         url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1600&auto=format&fit=crop&q=80') center/cover no-repeat;
+    }
+
+    /* Video element */
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    /* Gradient overlay on top of video */
+    .hero-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.75) 100%);
+      z-index: 1;
+      pointer-events: none;
     }
 
     /* Ember glow overlay */
@@ -306,6 +326,12 @@
       height: 40%;
       background: radial-gradient(ellipse at 50% 110%, rgba(181,39,30,0.18) 0%, transparent 70%);
       pointer-events: none;
+      z-index: 2;
+    }
+
+    /* On mobile: hide video entirely, static bg is enough */
+    @media (max-width: 767px), (pointer: coarse) {
+      .hero-video { display: none; }
     }
 
     .hero-content {
@@ -1321,7 +1347,20 @@
      HERO
 ════════════════════════════════════════════════════════ -->
 <section id="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-bg">
+    <video
+      class="hero-video"
+      id="heroVideo"
+      src="fire.mp4"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+    ></video>
+    <div class="hero-video-overlay"></div>
+  </div>
   <div class="container">
     <div class="hero-content">
       <p class="hero-eyebrow fade-up" data-i18n="hero_eyebrow">Groningen &mdash; Est. 2026</p>
@@ -2091,6 +2130,26 @@
   const _savedLang = localStorage.getItem('lang');
   if (_savedLang && _savedLang !== 'en') applyLang(_savedLang);
 
+  /* ── Hero video: pause when scrolled out, resume when back ── */
+  (function () {
+    const video = document.getElementById('heroVideo');
+    if (!video) return;
+    // Skip on mobile/touch — video is hidden via CSS anyway
+    if (window.matchMedia('(max-width: 767px), (pointer: coarse)').matches) return;
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          video.play().catch(function () {});
+        } else {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.1 });
+
+    observer.observe(document.getElementById('hero'));
+  }());
+
   /* ── Smooth anchor offset (account for fixed nav) ── */
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -2174,6 +2233,16 @@
       <div class="bk-field">
         <label for="bk-phone">Phone Number</label>
         <input type="tel" id="bk-phone" name="phone" placeholder="+31 50 000 0000" required />
+      </div>
+
+      <div class="bk-field">
+        <label for="bk-email">Email <span style="color:var(--ash);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="email" id="bk-email" name="email" placeholder="jan@email.com" />
+      </div>
+
+      <div class="bk-field">
+        <label for="bk-notes">Special Requests <span style="color:var(--ash);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="text" id="bk-notes" name="specialRequests" placeholder="Allergies, occasion, seating…" />
       </div>
 
       <button type="submit" class="bk-submit" id="bk-submit-btn">Confirm Reservation</button>
@@ -2260,26 +2329,23 @@
       submitBtn.disabled = true;
 
       const payload = {
-        name:   document.getElementById('bk-name').value.trim(),
-        phone:  document.getElementById('bk-phone').value.trim(),
-        date:   document.getElementById('bk-date').value,
-        time:   document.getElementById('bk-time').value,
-        guests: document.getElementById('bk-guests').value
+        name:            document.getElementById('bk-name').value.trim(),
+        phone:           document.getElementById('bk-phone').value.trim(),
+        partySize:       document.getElementById('bk-guests').value,
+        date:            document.getElementById('bk-date').value,
+        time:            document.getElementById('bk-time').value,
+        email:           document.getElementById('bk-email').value.trim(),
+        specialRequests: document.getElementById('bk-notes').value.trim()
       };
 
-      if (SCRIPT_URL && SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-        fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        })
-        .then(function () { showSuccess(); })
-        .catch(function () { showSuccess(); }); // show success even on no-cors opaque response
-      } else {
-        // No script URL configured — simulate
-        setTimeout(showSuccess, 900);
-      }
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function () { showSuccess(); })
+      .catch(function () { showSuccess(); });
     });
 
     function showSuccess() {
