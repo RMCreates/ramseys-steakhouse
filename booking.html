@@ -51,65 +51,39 @@
     ::-webkit-scrollbar-track { background: var(--black); }
     ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
 
-    /* ─── NAV ──────────────────────────────────────────── */
-    .nav {
-      background: rgba(10,10,10,0.95);
-      border-bottom: 1px solid var(--iron);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-logo img {
-      height: 52px;
-      width: auto;
-      display: block;
-    }
-
-    .nav-back {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--smoke);
-      transition: color 0.2s;
-    }
-
-    .nav-back:hover { color: var(--gold); }
-
-    .nav-back svg {
-      width: 16px;
-      height: 16px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+    /* ─── NAV ─────────────────────────────────────────────────── */
+    #nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0; background:rgba(10,10,10,0.85); transition:background 0.3s,box-shadow 0.3s; }
+    #nav.scrolled { background:rgba(10,10,10,0.97); box-shadow:0 2px 24px rgba(0,0,0,0.6); }
+    .nav-inner { display:flex; align-items:center; justify-content:space-between; padding:12px 48px; }
+    @media(max-width:767px){ .nav-inner { padding:10px 1.25rem; } }
+    .nav-logo { display:flex; align-items:center; flex-shrink:0; }
+    .nav-links { display:none; list-style:none; gap:2rem; align-items:center; }
+    @media(min-width:768px){ .nav-links { display:flex; } }
+    .nav-links a { font-size:13px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--smoke); transition:color 0.2s; }
+    .nav-links a:hover { color:#c9a84c; }
+    .nav-right { display:none; align-items:center; gap:1.25rem; }
+    @media(min-width:768px){ .nav-right { display:flex; } }
+    .lang-switcher { display:flex; align-items:center; gap:2px; }
+    .lang-btn { background:none; border:none; color:var(--smoke); cursor:pointer; font-family:'Barlow',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.1em; padding:3px 5px; transition:color 0.2s; line-height:1; }
+    .lang-btn:hover { color:var(--light); } .lang-btn.active { color:#c9a84c; }
+    .lang-sep { color:var(--ash); font-size:0.7rem; line-height:1; user-select:none; }
+    .nav-burger { display:flex; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    @media(min-width:768px){ .nav-burger { display:none; } }
+    .nav-burger span { display:block; width:24px; height:2px; background:var(--white); border-radius:2px; transition:transform 0.25s,opacity 0.25s; }
+    .nav-burger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity:0; }
+    .nav-burger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+    .nav-drawer { display:none; flex-direction:column; background:rgba(10,10,10,0.99); border-top:1px solid var(--iron); padding:1.5rem 1.25rem 2rem; gap:1.25rem; }
+    .nav-drawer.open { display:flex; }
+    @media(min-width:768px){ .nav-drawer { display:none !important; } }
+    .nav-drawer a { font-size:0.85rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--light); padding:0.4rem 0; border-bottom:1px solid var(--iron); }
+    .nav-drawer .btn { width:100%; text-align:center; margin-top:0.5rem; }
 
     /* ─── PAGE LAYOUT ──────────────────────────────────── */
     .page {
       max-width: 900px;
       margin: 0 auto;
-      padding: 3rem 1.5rem 5rem;
+      padding: 7rem 1.5rem 5rem;
     }
 
     .page-header {
@@ -716,22 +690,42 @@
 <body>
 
 <!-- ═══════ NAV ═══════ -->
-<header class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">
-      <img src="logo.png" alt="Ramsey's Steakhouse" />
-    </a>
-    <div class="nav-right">
-      <div class="lang-switcher">
-        <button class="lang-btn active" data-lang="en">EN</button>
-        <span class="lang-sep">|</span>
-        <button class="lang-btn" data-lang="nl">NL</button>
-      </div>
-      <a href="index.html" class="nav-back">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-        <span data-i18n="nav_back">Back to main site</span>
+<header id="nav">
+  <div class="container">
+    <nav class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.png" alt="Ramsey's Steakhouse" style="height:80px;width:auto;display:block;" />
       </a>
+      <ul class="nav-links">
+        <li><a href="menu.html" data-i18n="nav_menu">Menu</a></li>
+        <li><a href="booking.html" data-i18n="nav_reservations">Reservations</a></li>
+        <li><a href="about.html" data-i18n="nav_about">About</a></li>
+        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <span class="lang-sep">|</span>
+          <button class="lang-btn" data-lang="nl">NL</button>
+        </div>
+        <a href="booking.html" class="btn btn--gold" data-i18n="nav_reserve">Reserve a Table</a>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+  <div class="nav-drawer" id="navDrawer">
+    <a href="menu.html" data-i18n="nav_menu">Menu</a>
+    <a href="booking.html" data-i18n="nav_reservations">Reservations</a>
+    <a href="about.html" data-i18n="nav_about">About</a>
+    <a href="contact.html" data-i18n="nav_contact">Contact</a>
+    <div class="lang-switcher" style="padding:0.4rem 0;border-bottom:1px solid var(--iron);">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <span class="lang-sep" style="margin:0 4px;">|</span>
+      <button class="lang-btn" data-lang="nl">NL</button>
     </div>
+    <a href="booking.html" class="btn btn--gold" data-i18n="nav_reserve">Reserve a Table</a>
   </div>
 </header>
 
@@ -889,6 +883,27 @@
 </main>
 
 <script>
+  /* ── Sticky nav ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* ── Mobile nav ── */
+  const burger = document.getElementById('navBurger');
+  const drawer = document.getElementById('navDrawer');
+  burger.addEventListener('click', () => {
+    const open = drawer.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+  });
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', false);
+  }
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
   /* ─────────────────────────────────────────────────────
      TRANSLATIONS
   ───────────────────────────────────────────────────── */
