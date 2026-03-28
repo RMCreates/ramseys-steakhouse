@@ -6,6 +6,7 @@ cp logo.png docs/
 cp menu.html docs/
 cp about.html docs/
 cp contact.html docs/
+cp fire.mp4 docs/
 git add .
 git commit -m "${1:-update}"
 git push
